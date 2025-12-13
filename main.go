@@ -9,6 +9,8 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
     "github.com/gin-contrib/cors"
+
+    "github.com/alexandreffaria/hoby-loop/models"
 )
 
 // Global DB variable so we can use it everywhere
@@ -26,7 +28,7 @@ func ConnectDatabase() {
 
 	// Migrate the schema
 	// This creates/updates tables automatically
-	err = database.AutoMigrate(&User{}, &Basket{}, &Subscription{}, &Order{})
+	err = database.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
 	if err != nil {
 		log.Fatal("Migration failed: ", err)
 	}

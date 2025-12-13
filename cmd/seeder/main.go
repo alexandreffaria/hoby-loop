@@ -5,88 +5,68 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-
+	"path/filepath"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+
+	"github.com/alexandreffaria/hoby-loop/models" 
 )
 
-// --- 1. Define JSON Structs (Matching data.json) ---
-// These helpers allow us to read the file exactly as generated.
-
+// Helper structs for JSON parsing
 type JsonData struct {
-	Sellers       []Seller       `json:"sellers"`
-	Products      []Product      `json:"products"`
-	Users         []User         `json:"users"`
-	Subscriptions []Subscription `json:"subscriptions"`
+	Users         []UserJSON         `json:"users"`
+	Baskets       []BasketJSON       `json:"baskets"`
+	Subscriptions []SubscriptionJSON `json:"subscriptions"`
 }
 
-// --- 2. Define Database Models (GORM) ---
-// These are the tables that will be created in your DB.
-
-type Seller struct {
-	ID        string `gorm:"primaryKey" json:"id"`
-	Name      string `json:"name"`
-	OwnerName string `json:"owner_name"`
-	Email     string `json:"email"`
+// UserJSON matches the output structure of generate.py
+type UserJSON struct {
+	ID       uint   `json:"id"`
+	Role     string `json:"role"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	// Nested address object from Python
+	Address struct {
+		Street  string `json:"street"`
+		Number  string `json:"number"`
+		City    string `json:"city"`
+		State   string `json:"state"`
+		ZipCode string `json:"zip_code"`
+	} `json:"address"`
 }
 
-type Product struct {
-	ID             string  `gorm:"primaryKey" json:"id"`
-	SellerID       string  `json:"seller_id"` // FK to Seller
-	Name           string  `json:"name"`
-	Description    string  `json:"description"`
-	DurationLabel  string  `json:"duration_label"`
-	FrequencyLabel string  `json:"frequency_label"`
-	Price          float64 `json:"price"`
+type BasketJSON struct {
+	ID          uint    `json:"id"`
+	SellerID    uint    `json:"seller_id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
 }
 
-type User struct {
-	ID        string `gorm:"primaryKey" json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	AvatarURL string `json:"avatar_url"`
-	// In the JSON, Address is nested. In DB, we flat it or use a relation. 
-	// For simplicity, let's flatten it into the User table for now.
-	AddressStreet  string `json:"-"` 
-	AddressZip     string `json:"-"`
-	AddressCity    string `json:"-"`
-	// Helper to catch the nested JSON during unmarshal
-	AddressRaw     struct {
-		Street    string `json:"street"`
-		Number    string `json:"number"`
-		ZipCode   string `json:"zip_code"`
-		CityState string `json:"city_state"`
-	} `gorm:"-" json:"address"` 
+type SubscriptionJSON struct {
+	ID        uint   `json:"id"`
+	UserID    uint   `json:"user_id"`
+	BasketID  uint   `json:"basket_id"`
+	Frequency string `json:"frequency"`
+	Status    string `json:"status"`
 }
-
-type Subscription struct {
-	ID     string `gorm:"primaryKey" json:"id"`
-	Status string `json:"status"`
-	// In DB, we only store FKs.
-	UserID    string `json:"-"` 
-	ProductID string `json:"-"`
-}
-
-// --- 3. The Main Seeder Logic ---
 
 func main() {
-	// A. Connect to Database (Update with your credentials!)
-	dsn := "host=localhost user=hoby password=password123 dbname=hobyloop port=5433 sslmode=disable"	
+	// 1. Connect
+	dsn := "host=localhost user=hoby password=password123 dbname=hobyloop port=5433 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// B. Migrate Schema (Auto-create tables if missing)
-	fmt.Println("Migrating database schema...")
-	db.AutoMigrate(&Seller{}, &Product{}, &User{}, &Subscription{})
-
-	// C. Read the JSON File
-	fmt.Println("Reading data.json...")
-	fileContent, err := ioutil.ReadFile("../../scripts/data.json") // Adjust path if needed
+	// 2. Read File
+	absPath, _ := filepath.Abs("tools/data.json")
+	fileContent, err := ioutil.ReadFile(absPath)
 	if err != nil {
-		log.Fatal("Error reading json file:", err)
+		log.Fatal("Error reading data.json:", err)
 	}
 
 	var data JsonData
@@ -94,64 +74,62 @@ func main() {
 		log.Fatal("Error parsing json:", err)
 	}
 
-	// D. Seed Data Transactionally
-	fmt.Println("Seeding data...")
+	// 3. Seed
+	fmt.Println("🌱 Seeding database...")
 	db.Transaction(func(tx *gorm.DB) error {
 		
-		// 1. Insert Sellers
-		if err := tx.CreateInBatches(data.Sellers, 10).Error; err != nil {
-			return err
-		}
-		fmt.Printf("✅ Inserted %d Sellers\n", len(data.Sellers))
-
-		// 2. Insert Products
-		if err := tx.CreateInBatches(data.Products, 10).Error; err != nil {
-			return err
-		}
-		fmt.Printf("✅ Inserted %d Products\n", len(data.Products))
-
-		// 3. Insert Users (Need to map nested Address to Flat fields)
-		var usersToInsert []User
+		// Users
 		for _, u := range data.Users {
-			// Flatten the address data manually
-			u.AddressStreet = fmt.Sprintf("%s, %s", u.AddressRaw.Street, u.AddressRaw.Number)
-			u.AddressZip = u.AddressRaw.ZipCode
-			u.AddressCity = u.AddressRaw.CityState
-			usersToInsert = append(usersToInsert, u)
+			user := models.User{
+				Model:         gorm.Model{ID: u.ID},
+				Name:          u.Name,
+				Email:         u.Email,
+				Role:          u.Role,
+				Password:      u.Password,
+				// MAPPING ADDRESS HERE
+				AddressStreet: u.Address.Street,
+				AddressNumber: u.Address.Number,
+				AddressCity:   u.Address.City,
+				AddressState:  u.Address.State,
+				AddressZip:    u.Address.ZipCode,
+			}
+			// OnConflict ensures we update existing records instead of crashing
+			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&user).Error; err != nil {
+				return err
+			}
 		}
-		if err := tx.CreateInBatches(usersToInsert, 10).Error; err != nil {
-			return err
-		}
-		fmt.Printf("✅ Inserted %d Users\n", len(data.Users))
+		fmt.Printf("✅ Seeded %d Users (with Addresses)\n", len(data.Users))
 
-		// 4. Insert Subscriptions (Complex part: extracting IDs)
-		var subsToInsert []Subscription
+		// Baskets
+		for _, b := range data.Baskets {
+			basket := models.Basket{
+				Model:       gorm.Model{ID: b.ID},
+				UserID:      b.SellerID,
+				Name:        b.Name,
+				Description: b.Description,
+				Price:       b.Price,
+			}
+			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&basket).Error; err != nil {
+				return err
+			}
+		}
+		fmt.Printf("✅ Seeded %d Baskets\n", len(data.Baskets))
+
+		// Subscriptions
 		for _, s := range data.Subscriptions {
-			// TRICK: The JSON 'id' is "sub_{userID}_{productID}"
-			// Let's parse it to get our Foreign Keys back.
-			// Format: sub_user_1_prod_seller_1_1
-			
-			// Simple logic: We iterate the generated lists to find matches 
-			// (or simpler: assume the ID string parsing logic is robust)
-			
-			// For this MVP seeder, let's just insert the ID and Status 
-			// and leave the FKs null or parse them if you really need relation integrity immediately.
-			// Ideally, you'd parse strings.Split(s.ID, "_") but doing that robustly with regex is better.
-			
-			subsToInsert = append(subsToInsert, Subscription{
-				ID: s.ID,
-				Status: s.Status,
-				// UserID: ... (parsed from s.ID)
-				// ProductID: ... (parsed from s.ID)
-			})
+			sub := models.Subscription{
+				Model:     gorm.Model{ID: s.ID},
+				UserID:    s.UserID,
+				BasketID:  s.BasketID,
+				Frequency: s.Frequency,
+				Status:    s.Status,
+			}
+			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&sub).Error; err != nil {
+				return err
+			}
 		}
-		if err := tx.CreateInBatches(subsToInsert, 10).Error; err != nil {
-			return err
-		}
-		fmt.Printf("✅ Inserted %d Subscriptions\n", len(data.Subscriptions))
+		fmt.Printf("✅ Seeded %d Subscriptions\n", len(data.Subscriptions))
 
 		return nil
 	})
-
-	fmt.Println("🎉 Database seeded successfully!")
 }

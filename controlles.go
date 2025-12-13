@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"fmt"
+
+	"github.com/alexandreffaria/hoby-loop/models"
 )
 
 // Define what data we expect from the user
@@ -25,7 +27,7 @@ func CreateBasket(c *gin.Context) {
 	}
 
 	// 2. Create the Basket object
-	basket := Basket{
+	basket := models.Basket{
 		Name:        input.Name,
 		Description: input.Description,
 		Price:       input.Price,
@@ -61,7 +63,7 @@ func CreateSubscription(c *gin.Context) {
 	}
 
 	// 2. Create the Subscription object
-	subscription := Subscription{
+	subscription := models.Subscription{
 		UserID:    input.UserID,
 		BasketID:  input.BasketID,
 		Frequency: input.Frequency,
@@ -115,7 +117,7 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	// 1. Create the Order in DB
-	order := Order{
+	order := models.Order{
 		SubscriptionID: input.SubscriptionID,
 		Status:         input.Status,
 	}
