@@ -84,7 +84,7 @@ func CreateSubscription(c *gin.Context) {
 func GetSellerSubscriptions(c *gin.Context) {
 	sellerID := c.Param("id") // Get ID from URL (e.g., /sellers/1/subscriptions)
 
-	var subscriptions []Subscription
+	var subscriptions []models.Subscription
 
 	// The Magic GORM Query:
 	// 1. Join with Baskets table
@@ -130,7 +130,7 @@ func CreateOrder(c *gin.Context) {
 	// We use 'go func()' to run this in the background so the user doesn't wait
 	go func(subID uint, status string) {
 		// In a real app, you would fetch user email here and use SendGrid/AWS SES
-		var sub Subscription
+		var sub models.Subscription
 		// We need to fetch the User details to get the name/email
 		DB.Preload("User").Preload("Basket").First(&sub, subID)
 		

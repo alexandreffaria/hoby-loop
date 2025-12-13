@@ -62,6 +62,12 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
+	fmt.Println("🔄 Migrating database schema...")
+	err = db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
+	if err != nil {
+		log.Fatal("Migration failed:", err)
+	}
+
 	// 2. Read File
 	absPath, _ := filepath.Abs("tools/data.json")
 	fileContent, err := ioutil.ReadFile(absPath)
