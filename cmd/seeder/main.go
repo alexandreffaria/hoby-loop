@@ -21,14 +21,12 @@ type JsonData struct {
 	Subscriptions []SubscriptionJSON `json:"subscriptions"`
 }
 
-// UserJSON matches the output structure of generate.py
 type UserJSON struct {
 	ID       uint   `json:"id"`
 	Role     string `json:"role"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	// Nested address object from Python
 	Address struct {
 		Street  string `json:"street"`
 		Number  string `json:"number"`
@@ -62,11 +60,8 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	fmt.Println("🔄 Migrating database schema...")
-	err = db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
-	if err != nil {
-		log.Fatal("Migration failed:", err)
-	}
+	// Run Migrations (Ensure tables exist)
+	db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
 
 	// 2. Read File
 	absPath, _ := filepath.Abs("tools/data.json")
@@ -92,19 +87,17 @@ func main() {
 				Email:         u.Email,
 				Role:          u.Role,
 				Password:      u.Password,
-				// MAPPING ADDRESS HERE
 				AddressStreet: u.Address.Street,
 				AddressNumber: u.Address.Number,
 				AddressCity:   u.Address.City,
 				AddressState:  u.Address.State,
 				AddressZip:    u.Address.ZipCode,
 			}
-			// OnConflict ensures we update existing records instead of crashing
 			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&user).Error; err != nil {
 				return err
 			}
 		}
-		fmt.Printf("✅ Seeded %d Users (with Addresses)\n", len(data.Users))
+		fmt.Printf("✅ Seeded %d Users\n", len(data.Users))
 
 		// Baskets
 		for _, b := range data.Baskets {
@@ -136,6 +129,20 @@ func main() {
 		}
 		fmt.Printf("✅ Seeded %d Subscriptions\n", len(data.Subscriptions))
 
+		// --- 4. NEW: Reset Postgres Auto-Increment Counters ---
+		// This fixes the "Duplicate Key" error
+		fmt.Println("🔧 Resetting ID sequences...")
+		tables := []string{"users", "baskets", "subscriptions"}
+		for _, table := range tables {
+			// This SQL command tells Postgres: "Set the next ID to (MAX ID + 1)"
+			sql := fmt.Sprintf("SELECT setval(pg_get_serial_sequence('%s', 'id'), coalesce(max(id)+1, 1), false) FROM %s;", table, table)
+			if err := tx.Exec(sql).Error; err != nil {
+				log.Printf("⚠️ Failed to reset sequence for %s: %v", table, err)
+			}
+		}
+
 		return nil
 	})
+	
+	fmt.Println("🚀 Done!")
 }

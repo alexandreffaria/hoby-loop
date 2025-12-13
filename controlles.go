@@ -142,3 +142,16 @@ func CreateOrder(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": order, "message": "Order created and notification queued"})
 }
+
+// GetBasket fetches a single basket by ID for the checkout page
+func GetBasket(c *gin.Context) {
+	id := c.Param("id")
+	var basket models.Basket
+
+	if err := DB.First(&basket, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": basket})
+}

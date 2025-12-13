@@ -65,5 +65,7 @@ config := cors.DefaultConfig()
 
     r.POST("/orders", CreateOrder)
 
+    r.GET("/baskets/:id", GetBasket)
+
 	r.Run(":8080")
 }

@@ -1,75 +1,46 @@
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import ConsumerCheckout from './pages/ConsumerCheckout'
 
-// Simple styles to make it readable
-const styles = {
-  container: { padding: '20px', fontFamily: 'Arial, sans-serif' },
-  card: { border: '1px solid #ddd', padding: '15px', marginBottom: '10px', borderRadius: '8px' },
-  heading: { color: '#333' },
-  button: { background: '#007bff', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }
-}
-
-function App() {
-  // 1. STATE: Where we store the data coming from the backend
+// --- Seller Dashboard Component (The one we built before) ---
+function SellerDashboard() {
   const [subscriptions, setSubscriptions] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  // 2. EFFECT: Run this code when the page loads
+  
   useEffect(() => {
-    // We are hardcoding Seller ID 1 (Alex) for this MVP
     axios.get('http://localhost:8080/sellers/1/subscriptions')
-      .then(response => {
-        console.log("Data received:", response.data) // Check your browser console!
-        setSubscriptions(response.data.data) // Save the list to our state
-        setLoading(false)
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error)
-        setLoading(false)
-      })
+      .then(res => setSubscriptions(res.data.data))
+      .catch(console.error)
   }, [])
 
-  // 3. ACTION: Function to mark an order as "Preparing"
-  const notifyConsumer = (subId, basketName) => {
-    axios.post('http://localhost:8080/orders', {
-      subscription_id: subId,
-      status: "Preparing"
-    })
-    .then(() => {
-      alert(`Success! We notified the user about their ${basketName}.`)
-    })
-    .catch(err => alert("Something went wrong."))
-  }
-
-  // 4. RENDER: The HTML the user actually sees
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>📦 Seller Dashboard</h1>
-      <p>Welcome back, Alex. Here are your active subscriptions:</p>
-
-      {loading ? (
-        <p>Loading your data...</p>
-      ) : (
-        <div>
-          {subscriptions.map(sub => (
-            <div key={sub.ID} style={styles.card}>
-              <h3>{sub.basket.name}</h3>
-              <p><strong>Customer:</strong> {sub.user.name} ({sub.user.email})</p>
-              <p><strong>Frequency:</strong> {sub.frequency}</p>
-              <p><strong>Status:</strong> {sub.status}</p>
-              
-              <button 
-                style={styles.button}
-                onClick={() => notifyConsumer(sub.ID, sub.basket.name)}
-              >
-                🔔 Mark as Preparing
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="max-w-md mx-auto min-h-screen p-5 font-sans text-gray-800">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-sm font-black text-gray-400 uppercase tracking-widest">{subscriptions.length} Assinantes</h1>
+        <Link to="/checkout/101" className="text-xs bg-gray-200 px-2 py-1 rounded text-blue-600 font-bold">View Consumer Page</Link>
+      </div>
+      <div className="space-y-4">
+        {subscriptions.map(sub => (
+           <div key={sub.ID} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+             <h2 className="text-lg font-black uppercase">{sub.user.name}</h2>
+             <p className="text-sm text-gray-500 font-medium mb-3">{sub.basket.name}</p>
+             <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold uppercase rounded-lg">{sub.frequency}</span>
+           </div>
+        ))}
+      </div>
     </div>
   )
 }
 
-export default App
+// --- Main Router ---
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SellerDashboard />} />
+        {/* Pass Basket ID 101 as a test */}
+        <Route path="/checkout/:id" element={<ConsumerCheckout />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
