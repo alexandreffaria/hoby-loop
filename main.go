@@ -58,14 +58,14 @@ config := cors.DefaultConfig()
 	})
 
     r.POST("/baskets", CreateBasket)
-
     r.POST("/subscriptions", CreateSubscription)
-
-    r.GET("/sellers/:id/subscriptions", GetSellerSubscriptions)
-
+    r.POST("/login", Login)
     r.POST("/orders", CreateOrder)
 
+    r.GET("/sellers/:id/subscriptions", GetSellerSubscriptions)
     r.GET("/baskets/:id", GetBasket)
+    r.GET("/users/:id/subscriptions", GetConsumerSubscriptions) // For Consumer Dashboard
+    r.GET("/sellers/:id/baskets", GetSellerBaskets)             // For Seller Catalog
 
 	r.Run(":8080")
 }

@@ -155,3 +155,51 @@ func GetBasket(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": basket})
 }
+
+// GetConsumerSubscriptions finds what a specific user (consumer) has subscribed to
+func GetConsumerSubscriptions(c *gin.Context) {
+	userID := c.Param("id")
+	var subscriptions []models.Subscription
+
+	// Preload Basket so we can show the product name
+	if err := DB.Preload("Basket").Where("user_id = ?", userID).Find(&subscriptions).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch subscriptions"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": subscriptions})
+}
+
+// GetSellerBaskets finds all products created by a seller (so they can share links)
+func GetSellerBaskets(c *gin.Context) {
+	sellerID := c.Param("id")
+	var baskets []models.Basket
+
+	if err := DB.Where("user_id = ?", sellerID).Find(&baskets).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch baskets"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": baskets})
+}
+
+// Login finds a user by email (Simple "Fake Auth")
+func Login(c *gin.Context) {
+	var input struct {
+		Email string `json:"email" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email is required"})
+		return
+	}
+
+	var user models.User
+	// We ignore the password for now, just matching the email
+	if err := DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
