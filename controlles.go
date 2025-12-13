@@ -203,3 +203,38 @@ func Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
+
+// UpdateUser allows users to edit their profile and address
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+	var user models.User
+
+	// 1. Find the user
+	if err := DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	// 2. Bind the new data
+	// We use a temporary struct or just map the input to the existing model
+	var input models.User
+		if err := c.ShouldBindJSON(&input); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Update fields (including new ones)
+		DB.Model(&user).Updates(models.User{
+			Name:          input.Name,
+			Email:         input.Email,
+			CNPJ:          input.CNPJ, 
+			CPF:           input.CPF,  
+			AddressStreet: input.AddressStreet,
+			AddressNumber: input.AddressNumber,
+			AddressCity:   input.AddressCity,
+			AddressState:  input.AddressState,
+			AddressZip:    input.AddressZip,
+		})
+
+		c.JSON(http.StatusOK, gin.H{"data": user})
+}

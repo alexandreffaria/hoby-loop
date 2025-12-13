@@ -48,13 +48,14 @@ export default function SellerDashboard() {
           <h1 className="text-xl font-black text-gray-800 uppercase">Dashboard</h1>
           <p className="text-xs text-gray-400">Olá, {user?.name}</p>
         </div>
-        <button onClick={logout} className="text-xs text-red-400 font-bold underline">Sair</button>
+        
+        <div className="flex gap-3">
+          {/* NEW: Config Button */}
+          <button onClick={() => navigate('/config')} className="text-2xl" title="Configurações">⚙️</button>
+          <button onClick={logout} className="text-xs text-red-400 font-bold underline self-center">Sair</button>
+        </div>
       </div>
-      
-      {/* ... Rest of your render code (Tabs, Lists) remains exactly the same ... */}
-      
-      {/* Just hiding the rest for brevity, paste your previous JSX here starting from <div className="flex bg-white... > */}
-      <div className="flex bg-white rounded-lg p-1 shadow-sm border border-gray-100 mb-6">
+           <div className="flex bg-white rounded-lg p-1 shadow-sm border border-gray-100 mb-6">
           <button 
             onClick={() => setActiveTab('clients')}
             className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-colors ${activeTab === 'clients' ? 'bg-blue-100 text-blue-600' : 'text-gray-400'}`}

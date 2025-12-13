@@ -12,10 +12,8 @@ export default function Login() {
     axios.post('http://localhost:8080/login', { email })
       .then(res => {
         const user = res.data.data
-        // 1. Save user to LocalStorage (Simple Session)
         localStorage.setItem('user', JSON.stringify(user))
         
-        // 2. Redirect based on Role
         if (user.role === 'seller') {
           navigate('/seller')
         } else {
@@ -25,7 +23,6 @@ export default function Login() {
       .catch(() => alert("Usuário não encontrado! Verifique os emails de teste abaixo."))
   }
 
-  // Helper to quick-fill emails
   const fillEmail = (val) => setEmail(val)
 
   return (
@@ -40,7 +37,7 @@ export default function Login() {
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ex: knovais@pires.com"
+              placeholder="ex: ada-conceicao@cirino.com"
               className="w-full bg-gray-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-blue-500 transition-colors"
             />
           </div>
@@ -53,28 +50,29 @@ export default function Login() {
           </button>
         </form>
 
-        
         <div className="mt-8 pt-6 border-t border-gray-100 text-xs text-gray-500">
           <p className="font-bold mb-3 text-gray-400 uppercase tracking-wider">Clique para testar:</p>
           
           <div className="space-y-3">
             <div>
               <p className="font-bold text-blue-600 mb-1">🛍️ Vendedores</p>
-              <button onClick={() => fillEmail('knovais@pires.com')} className="block hover:underline mb-1">
-                Alex (Seller 1) - <span className="text-gray-400">knovais@pires.com</span>
+              {/* Updated based on your current data.json */}
+              <button onClick={() => fillEmail('ada-conceicao@cirino.com')} className="block hover:underline mb-1">
+                Viana (Seller 1)
               </button>
-              <button onClick={() => fillEmail('opimenta@da.com')} className="block hover:underline">
-                Pimenta (Seller 2) - <span className="text-gray-400">opimenta@da.com</span>
+              <button onClick={() => fillEmail('lunaferreira@da.com')} className="block hover:underline">
+                Barros Ferreira (Seller 2)
               </button>
             </div>
 
             <div>
               <p className="font-bold text-green-600 mb-1">👤 Clientes</p>
-              <button onClick={() => fillEmail('vitor04@example.com')} className="block hover:underline mb-1">
-                Otto (User 10) - <span className="text-gray-400">vitor04@example.com</span>
+              {/* Updated based on your current data.json */}
+              <button onClick={() => fillEmail('aliciacirino@example.com')} className="block hover:underline mb-1">
+                Luiz Gustavo (User 10)
               </button>
-              <button onClick={() => fillEmail('isabellasilveira@example.org')} className="block hover:underline">
-                Carolina (User 16) - <span className="text-gray-400">isabellasilveira@example.org</span>
+              <button onClick={() => fillEmail('enrico30@example.org')} className="block hover:underline">
+                Eduardo (User 11)
               </button>
             </div>
           </div>

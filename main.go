@@ -67,5 +67,7 @@ config := cors.DefaultConfig()
     r.GET("/users/:id/subscriptions", GetConsumerSubscriptions) // For Consumer Dashboard
     r.GET("/sellers/:id/baskets", GetSellerBaskets)             // For Seller Catalog
 
+    r.PUT("/users/:id", UpdateUser)
+
 	r.Run(":8080")
 }

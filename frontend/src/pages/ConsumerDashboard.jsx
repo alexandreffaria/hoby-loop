@@ -31,7 +31,12 @@ export default function ConsumerDashboard() {
           <h1 className="text-xl font-black text-gray-800 uppercase">Minhas Assinaturas</h1>
           <p className="text-xs text-gray-400">Olá, {user?.name}</p>
         </div>
-        <button onClick={logout} className="text-xs text-red-400 font-bold underline">Sair</button>
+        
+        <div className="flex gap-3">
+
+          <button onClick={() => navigate('/config')} className="text-2xl" title="Configurações">⚙️</button>
+          <button onClick={logout} className="text-xs text-red-400 font-bold underline self-center">Sair</button>
+        </div>
       </div>
 
       {subscriptions.length === 0 ? (

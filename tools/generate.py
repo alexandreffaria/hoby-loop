@@ -13,14 +13,16 @@ def generate_mock_data():
 
     # --- 1. Sellers (IDs 1-5) ---
     for i in range(1, 6):
-        seller_id = i
+        seller_id = i  # <--- This was missing!
+        
         data["users"].append({
             "id": seller_id,
             "role": "seller",
             "name": fake.company(),
             "email": fake.company_email(),
             "password": "password123",
-            # Address info for Seller
+            "cnpj": fake.cnpj(),   # Generate CNPJ
+            "cpf": "",             # Empty for sellers
             "address": {
                 "street": fake.street_name(),
                 "number": str(random.randint(1, 999)),
@@ -49,12 +51,13 @@ def generate_mock_data():
             "name": fake.name(),
             "email": fake.email(),
             "password": "password123",
-            # Address info for Consumer
+            "cnpj": "",            # Empty for consumers
+            "cpf": fake.cpf(),     # Generate CPF
             "address": {
                 "street": fake.street_name(),
                 "number": str(random.randint(10, 9999)),
-                "city": "Florianópolis",     # Hardcoded for demo
-                "state": "SC",               # Hardcoded for demo
+                "city": "Florianópolis",
+                "state": "SC",
                 "zip_code": fake.postcode()
             }
         })
@@ -65,6 +68,7 @@ def generate_mock_data():
     subscription_id = 1
 
     for consumer in active_consumers:
+        # 40% chance a user has a subscription
         if random.random() > 0.4:
             basket = random.choice(all_baskets)
             data["subscriptions"].append({

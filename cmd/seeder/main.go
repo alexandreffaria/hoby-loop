@@ -27,6 +27,8 @@ type UserJSON struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	CNPJ    string `json:"cnpj,omitempty"`
+	CPF	 string `json:"cpf,omitempty"`
 	Address struct {
 		Street  string `json:"street"`
 		Number  string `json:"number"`
@@ -87,6 +89,8 @@ func main() {
 				Email:         u.Email,
 				Role:          u.Role,
 				Password:      u.Password,
+				CNPJ:          u.CNPJ,
+				CPF:		   u.CPF,
 				AddressStreet: u.Address.Street,
 				AddressNumber: u.Address.Number,
 				AddressCity:   u.Address.City,

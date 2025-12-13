@@ -12,6 +12,9 @@ type User struct {
 	Role     string   `json:"role"`
 	Name     string   `json:"name"`
 
+	CNPJ string `json:"cnpj"` // Only for Sellers
+	CPF  string `json:"cpf"`  // Only for Consumers
+
 	// Address Fields
 	AddressStreet string `json:"address_street"`
 	AddressNumber string `json:"address_number"`
