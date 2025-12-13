@@ -2,7 +2,12 @@ module github.com/alexandreffaria/hoby-loop
 
 go 1.24.5
 
-require github.com/gin-gonic/gin v1.11.0
+require (
+	github.com/gin-contrib/cors v1.7.6
+	github.com/gin-gonic/gin v1.11.0
+	gorm.io/driver/postgres v1.6.0
+	gorm.io/gorm v1.31.1
+)
 
 require (
 	github.com/bytedance/gopkg v0.1.3 // indirect
@@ -41,6 +46,4 @@ require (
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
-	gorm.io/driver/postgres v1.6.0 // indirect
-	gorm.io/gorm v1.31.1 // indirect
 )

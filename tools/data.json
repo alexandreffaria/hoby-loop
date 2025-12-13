@@ -1,0 +1,660 @@
+{
+  "sellers": [
+    {
+      "id": "seller_1",
+      "name": "Ribeiro e Filhos",
+      "owner_name": "Otávio da Mata",
+      "email": "isadorada-cruz@castro.br"
+    },
+    {
+      "id": "seller_2",
+      "name": "Leão",
+      "owner_name": "Caleb Martins",
+      "email": "enovais@da.net"
+    },
+    {
+      "id": "seller_3",
+      "name": "Campos Macedo - EI",
+      "owner_name": "Maria Julia Ribeiro",
+      "email": "cpires@silveira.com"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod_seller_1_1",
+      "seller_id": "seller_1",
+      "name": "Assinatura Perferendis",
+      "description": "Debitis expedita reiciendis vitae accusamus quae eum doloremque molestiae ullam quisquam.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 6 meses",
+      "frequency_label": "Mensalmente",
+      "price": 162.55
+    },
+    {
+      "id": "prod_seller_1_2",
+      "seller_id": "seller_1",
+      "name": "Assinatura Excepturi",
+      "description": "Esse molestiae asperiores libero placeat veniam est quibusdam modi.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Mensalmente",
+      "price": 158.32
+    },
+    {
+      "id": "prod_seller_1_3",
+      "seller_id": "seller_1",
+      "name": "Assinatura Delectus",
+      "description": "Molestias necessitatibus totam perspiciatis recusandae officiis.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Semanalmente",
+      "price": 145.46
+    },
+    {
+      "id": "prod_seller_2_1",
+      "seller_id": "seller_2",
+      "name": "Assinatura Animi",
+      "description": "Sed tempore voluptatum incidunt consequatur eveniet voluptatum adipisci.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Quinzenalmente",
+      "price": 188.79
+    },
+    {
+      "id": "prod_seller_2_2",
+      "seller_id": "seller_2",
+      "name": "Assinatura Ad",
+      "description": "Harum amet provident debitis placeat excepturi laborum fugiat aliquam quaerat hic ipsa.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 12 meses",
+      "frequency_label": "Semanalmente",
+      "price": 121.02
+    },
+    {
+      "id": "prod_seller_2_3",
+      "seller_id": "seller_2",
+      "name": "Assinatura Ea",
+      "description": "Facere rerum mollitia nihil perspiciatis temporibus nisi distinctio necessitatibus non earum odio.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 6 meses",
+      "frequency_label": "Mensalmente",
+      "price": 96.56
+    },
+    {
+      "id": "prod_seller_3_1",
+      "seller_id": "seller_3",
+      "name": "Assinatura Illo",
+      "description": "Sunt asperiores delectus blanditiis culpa quibusdam dignissimos laboriosam eligendi praesentium nam asperiores quaerat.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Mensalmente",
+      "price": 52.78
+    },
+    {
+      "id": "prod_seller_3_2",
+      "seller_id": "seller_3",
+      "name": "Assinatura Incidunt",
+      "description": "Aut vitae nostrum harum nihil fuga.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Quinzenalmente",
+      "price": 181.94
+    },
+    {
+      "id": "prod_seller_3_3",
+      "seller_id": "seller_3",
+      "name": "Assinatura Velit",
+      "description": "Suscipit quaerat libero pariatur cupiditate doloremque temporibus temporibus.",
+      "image_url": "https://via.placeholder.com/150",
+      "duration_label": "Durante 3 meses",
+      "frequency_label": "Semanalmente",
+      "price": 86.83
+    }
+  ],
+  "users": [
+    {
+      "id": "user_1",
+      "name": "Gabriel Melo",
+      "email": "kcosta@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_1",
+      "address": {
+        "street": "Setor de Cavalcante",
+        "number": "4428",
+        "complement": "",
+        "zip_code": "25457-704",
+        "city_state": "Brito/PA",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "6830",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_2",
+      "name": "André Pereira",
+      "email": "kgarcia@example.net",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_2",
+      "address": {
+        "street": "Lago João Pedro Mendes",
+        "number": "4978",
+        "complement": "Apto 88",
+        "zip_code": "38692053",
+        "city_state": "Brito do Galho/RN",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "1627",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_3",
+      "name": "Ágatha da Conceição",
+      "email": "qcavalcanti@example.net",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_3",
+      "address": {
+        "street": "Fazenda de Almeida",
+        "number": "659",
+        "complement": "Apto 9",
+        "zip_code": "97734976",
+        "city_state": "Barros/PE",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "8275",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_4",
+      "name": "Nicole Araújo",
+      "email": "eduarte@example.net",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_4",
+      "address": {
+        "street": "Recanto Sarah da Rocha",
+        "number": "2455",
+        "complement": "",
+        "zip_code": "14871-321",
+        "city_state": "Martins/PA",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "7546",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_5",
+      "name": "Melina Lopes",
+      "email": "zvieira@example.net",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_5",
+      "address": {
+        "street": "Trecho de Silveira",
+        "number": "2482",
+        "complement": "Apto 15",
+        "zip_code": "27410594",
+        "city_state": "da Rosa do Sul/RJ",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "7569",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_6",
+      "name": "Dr. Rael Peixoto",
+      "email": "andremontenegro@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_6",
+      "address": {
+        "street": "Praça de Cavalcanti",
+        "number": "9810",
+        "complement": "Apto 29",
+        "zip_code": "80733-590",
+        "city_state": "Araújo de Mendonça/AC",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "3977",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_7",
+      "name": "Heloisa Fernandes",
+      "email": "tnogueira@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_7",
+      "address": {
+        "street": "Viela Jesus",
+        "number": "1336",
+        "complement": "",
+        "zip_code": "56782364",
+        "city_state": "da Mota/ES",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "2417",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_8",
+      "name": "Juan Carvalho",
+      "email": "eduarda05@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_8",
+      "address": {
+        "street": "Trevo Luiz Miguel Cirino",
+        "number": "6276",
+        "complement": "",
+        "zip_code": "93902-490",
+        "city_state": "Lima/PB",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "1882",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_9",
+      "name": "Julia Almeida",
+      "email": "guerralorena@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_9",
+      "address": {
+        "street": "Favela Davi Lucas Cavalcanti",
+        "number": "6776",
+        "complement": "",
+        "zip_code": "38011543",
+        "city_state": "Abreu/AM",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "6505",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_10",
+      "name": "Lucas Gabriel Souza",
+      "email": "bgoncalves@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_10",
+      "address": {
+        "street": "Loteamento Bárbara Nascimento",
+        "number": "1891",
+        "complement": "",
+        "zip_code": "09963864",
+        "city_state": "da Mata do Galho/PR",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "7961",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_11",
+      "name": "Guilherme Castro",
+      "email": "mendoncaantony@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_11",
+      "address": {
+        "street": "Condomínio de Carvalho",
+        "number": "6385",
+        "complement": "",
+        "zip_code": "78278-446",
+        "city_state": "Cavalcante da Prata/PB",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "7122",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_12",
+      "name": "Theo Sampaio",
+      "email": "liz38@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_12",
+      "address": {
+        "street": "Morro de Souza",
+        "number": "6818",
+        "complement": "Apto 94",
+        "zip_code": "89018-805",
+        "city_state": "da Mata/MG",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "5690",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_13",
+      "name": "João Guilherme Sampaio",
+      "email": "joao-guilherme18@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_13",
+      "address": {
+        "street": "Estação Nathan Marques",
+        "number": "4757",
+        "complement": "",
+        "zip_code": "11263357",
+        "city_state": "Garcia de Minas/AP",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "6543",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_14",
+      "name": "Lavínia da Mata",
+      "email": "theodoro00@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_14",
+      "address": {
+        "street": "Favela Vitor Gabriel da Costa",
+        "number": "7864",
+        "complement": "Apto 45",
+        "zip_code": "18017237",
+        "city_state": "da Conceição/AC",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "9817",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_15",
+      "name": "Ana Laura Montenegro",
+      "email": "fariasleo@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_15",
+      "address": {
+        "street": "Esplanada de Brito",
+        "number": "7770",
+        "complement": "Apto 15",
+        "zip_code": "44788409",
+        "city_state": "Fonseca/TO",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "3895",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_16",
+      "name": "Sr. Apollo Barros",
+      "email": "pramos@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_16",
+      "address": {
+        "street": "Vila Gomes",
+        "number": "8288",
+        "complement": "",
+        "zip_code": "66483693",
+        "city_state": "Fonseca/AC",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "1444",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_17",
+      "name": "Stella Peixoto",
+      "email": "jda-luz@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_17",
+      "address": {
+        "street": "Avenida Davi Lucca Silveira",
+        "number": "3951",
+        "complement": "",
+        "zip_code": "23874793",
+        "city_state": "Castro de Rocha/AL",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "8249",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_18",
+      "name": "Stephany Nascimento",
+      "email": "luigi99@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_18",
+      "address": {
+        "street": "Vereda de Moura",
+        "number": "2380",
+        "complement": "",
+        "zip_code": "55591-224",
+        "city_state": "Azevedo de Minas/PI",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "6230",
+        "brand": "Visa"
+      }
+    },
+    {
+      "id": "user_19",
+      "name": "Ana Carolina Moura",
+      "email": "icarvalho@example.org",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_19",
+      "address": {
+        "street": "Trecho de Lopes",
+        "number": "4599",
+        "complement": "Apto 40",
+        "zip_code": "50710174",
+        "city_state": "Santos/TO",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "9441",
+        "brand": "Mastercard"
+      }
+    },
+    {
+      "id": "user_20",
+      "name": "Srta. Ana Liz Aragão",
+      "email": "joaquimribeiro@example.net",
+      "avatar_url": "https://i.pravatar.cc/150?u=user_20",
+      "address": {
+        "street": "Vale Aylla Gomes",
+        "number": "3996",
+        "complement": "",
+        "zip_code": "54887866",
+        "city_state": "Nogueira do Oeste/CE",
+        "reference": "Próximo ao mercado"
+      },
+      "payment_method": {
+        "last4": "2033",
+        "brand": "Visa"
+      }
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub_user_1_prod_seller_3_2",
+      "status": "active",
+      "user_summary": {
+        "name": "Gabriel Melo",
+        "address_line_1": "Setor de Cavalcante, 4428",
+        "address_line_2": "25457-704 Brito/PA"
+      },
+      "product_summary": {
+        "name": "Assinatura Incidunt",
+        "duration": "Durante 3 meses",
+        "frequency": "Quinzenalmente"
+      }
+    },
+    {
+      "id": "sub_user_2_prod_seller_3_3",
+      "status": "active",
+      "user_summary": {
+        "name": "André Pereira",
+        "address_line_1": "Lago João Pedro Mendes, 4978",
+        "address_line_2": "38692053 Brito do Galho/RN"
+      },
+      "product_summary": {
+        "name": "Assinatura Velit",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_3_prod_seller_2_3",
+      "status": "active",
+      "user_summary": {
+        "name": "Ágatha da Conceição",
+        "address_line_1": "Fazenda de Almeida, 659",
+        "address_line_2": "97734976 Barros/PE"
+      },
+      "product_summary": {
+        "name": "Assinatura Ea",
+        "duration": "Durante 6 meses",
+        "frequency": "Mensalmente"
+      }
+    },
+    {
+      "id": "sub_user_5_prod_seller_1_3",
+      "status": "active",
+      "user_summary": {
+        "name": "Melina Lopes",
+        "address_line_1": "Trecho de Silveira, 2482",
+        "address_line_2": "27410594 da Rosa do Sul/RJ"
+      },
+      "product_summary": {
+        "name": "Assinatura Delectus",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_6_prod_seller_3_3",
+      "status": "active",
+      "user_summary": {
+        "name": "Dr. Rael Peixoto",
+        "address_line_1": "Praça de Cavalcanti, 9810",
+        "address_line_2": "80733-590 Araújo de Mendonça/AC"
+      },
+      "product_summary": {
+        "name": "Assinatura Velit",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_8_prod_seller_3_3",
+      "status": "active",
+      "user_summary": {
+        "name": "Juan Carvalho",
+        "address_line_1": "Trevo Luiz Miguel Cirino, 6276",
+        "address_line_2": "93902-490 Lima/PB"
+      },
+      "product_summary": {
+        "name": "Assinatura Velit",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_10_prod_seller_2_1",
+      "status": "active",
+      "user_summary": {
+        "name": "Lucas Gabriel Souza",
+        "address_line_1": "Loteamento Bárbara Nascimento, 1891",
+        "address_line_2": "09963864 da Mata do Galho/PR"
+      },
+      "product_summary": {
+        "name": "Assinatura Animi",
+        "duration": "Durante 3 meses",
+        "frequency": "Quinzenalmente"
+      }
+    },
+    {
+      "id": "sub_user_11_prod_seller_3_1",
+      "status": "active",
+      "user_summary": {
+        "name": "Guilherme Castro",
+        "address_line_1": "Condomínio de Carvalho, 6385",
+        "address_line_2": "78278-446 Cavalcante da Prata/PB"
+      },
+      "product_summary": {
+        "name": "Assinatura Illo",
+        "duration": "Durante 3 meses",
+        "frequency": "Mensalmente"
+      }
+    },
+    {
+      "id": "sub_user_12_prod_seller_2_2",
+      "status": "active",
+      "user_summary": {
+        "name": "Theo Sampaio",
+        "address_line_1": "Morro de Souza, 6818",
+        "address_line_2": "89018-805 da Mata/MG"
+      },
+      "product_summary": {
+        "name": "Assinatura Ad",
+        "duration": "Durante 12 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_13_prod_seller_3_3",
+      "status": "active",
+      "user_summary": {
+        "name": "João Guilherme Sampaio",
+        "address_line_1": "Estação Nathan Marques, 4757",
+        "address_line_2": "11263357 Garcia de Minas/AP"
+      },
+      "product_summary": {
+        "name": "Assinatura Velit",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_15_prod_seller_3_3",
+      "status": "active",
+      "user_summary": {
+        "name": "Ana Laura Montenegro",
+        "address_line_1": "Esplanada de Brito, 7770",
+        "address_line_2": "44788409 Fonseca/TO"
+      },
+      "product_summary": {
+        "name": "Assinatura Velit",
+        "duration": "Durante 3 meses",
+        "frequency": "Semanalmente"
+      }
+    },
+    {
+      "id": "sub_user_17_prod_seller_3_2",
+      "status": "active",
+      "user_summary": {
+        "name": "Stella Peixoto",
+        "address_line_1": "Avenida Davi Lucca Silveira, 3951",
+        "address_line_2": "23874793 Castro de Rocha/AL"
+      },
+      "product_summary": {
+        "name": "Assinatura Incidunt",
+        "duration": "Durante 3 meses",
+        "frequency": "Quinzenalmente"
+      }
+    },
+    {
+      "id": "sub_user_20_prod_seller_3_1",
+      "status": "active",
+      "user_summary": {
+        "name": "Srta. Ana Liz Aragão",
+        "address_line_1": "Vale Aylla Gomes, 3996",
+        "address_line_2": "54887866 Nogueira do Oeste/CE"
+      },
+      "product_summary": {
+        "name": "Assinatura Illo",
+        "duration": "Durante 3 meses",
+        "frequency": "Mensalmente"
+      }
+    }
+  ]
+}

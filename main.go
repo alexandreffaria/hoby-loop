@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+    "github.com/gin-contrib/cors"
 )
 
 // Global DB variable so we can use it everywhere
@@ -39,6 +40,13 @@ func main() {
 	ConnectDatabase()
 
 	r := gin.Default()
+
+    // Configure CORS to allow the frontend to talk to us
+config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+	r.Use(cors.New(config))
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
