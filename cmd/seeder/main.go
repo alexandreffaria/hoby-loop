@@ -7,11 +7,11 @@ import (
 	"log"
 	"path/filepath"
 
+	"github.com/alexandreffaria/hoby-loop/config"
+	"github.com/alexandreffaria/hoby-loop/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-
-	"github.com/alexandreffaria/hoby-loop/models" 
 )
 
 // Helper structs for JSON parsing
@@ -27,9 +27,9 @@ type UserJSON struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	CNPJ    string `json:"cnpj,omitempty"`
-	CPF	 string `json:"cpf,omitempty"`
-	Address struct {
+	CNPJ     string `json:"cnpj,omitempty"`
+	CPF      string `json:"cpf,omitempty"`
+	Address  struct {
 		Street  string `json:"street"`
 		Number  string `json:"number"`
 		City    string `json:"city"`
@@ -55,17 +55,17 @@ type SubscriptionJSON struct {
 }
 
 func main() {
-	// 1. Connect
-	dsn := "host=localhost user=hoby password=password123 dbname=hobyloop port=5433 sslmode=disable"
+	// 1. Connect to database using the configuration
+	dsn := config.GetDSN()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Run Migrations (Ensure tables exist)
+	// Run Migrations
 	db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
 
-	// 2. Read File
+	// 2. Read seed data file
 	absPath, _ := filepath.Abs("tools/data.json")
 	fileContent, err := ioutil.ReadFile(absPath)
 	if err != nil {
@@ -77,7 +77,7 @@ func main() {
 		log.Fatal("Error parsing json:", err)
 	}
 
-	// 3. Seed
+	// 3. Seed the database
 	fmt.Println("🌱 Seeding database...")
 	db.Transaction(func(tx *gorm.DB) error {
 		
@@ -90,7 +90,7 @@ func main() {
 				Role:          u.Role,
 				Password:      u.Password,
 				CNPJ:          u.CNPJ,
-				CPF:		   u.CPF,
+				CPF:           u.CPF,
 				AddressStreet: u.Address.Street,
 				AddressNumber: u.Address.Number,
 				AddressCity:   u.Address.City,
@@ -133,12 +133,10 @@ func main() {
 		}
 		fmt.Printf("✅ Seeded %d Subscriptions\n", len(data.Subscriptions))
 
-		// --- 4. NEW: Reset Postgres Auto-Increment Counters ---
-		// This fixes the "Duplicate Key" error
+		// Reset Postgres Auto-Increment Counters
 		fmt.Println("🔧 Resetting ID sequences...")
 		tables := []string{"users", "baskets", "subscriptions"}
 		for _, table := range tables {
-			// This SQL command tells Postgres: "Set the next ID to (MAX ID + 1)"
 			sql := fmt.Sprintf("SELECT setval(pg_get_serial_sequence('%s', 'id'), coalesce(max(id)+1, 1), false) FROM %s;", table, table)
 			if err := tx.Exec(sql).Error; err != nil {
 				log.Printf("⚠️ Failed to reset sequence for %s: %v", table, err)
@@ -148,5 +146,5 @@ func main() {
 		return nil
 	})
 	
-	fmt.Println("🚀 Done!")
+	fmt.Println("🚀 Seeding completed successfully!")
 }
