@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/alexandreffaria/hoby-loop/internal/database"
 	"github.com/alexandreffaria/hoby-loop/internal/middleware"
 	"github.com/alexandreffaria/hoby-loop/models"
