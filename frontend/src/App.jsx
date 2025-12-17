@@ -6,6 +6,8 @@ import ConsumerCheckout from './pages/ConsumerCheckout'
 import ConfigPage from './pages/ConfigPage'
 import AdminDashboard from './pages/AdminDashboard'
 import Landing from './pages/Landing'
+import SellerRegistration from './pages/SellerRegistration'
+import SubscriberRegistration from './pages/SubscriberRegistration'
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/checkout/:id" element={<ConsumerCheckout />} />
         <Route path="/config" element={<ConfigPage />} />
+        <Route path="/seller-registration" element={<SellerRegistration />} />
+        <Route path="/subscriber-registration" element={<SubscriberRegistration />} />
       </Routes>
     </BrowserRouter>
   )

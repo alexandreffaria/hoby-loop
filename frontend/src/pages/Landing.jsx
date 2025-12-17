@@ -9,7 +9,7 @@ export default function Landing() {
 
       <div className="grid gap-8 w-full max-w-md">
         {/* Seller Entry */}
-        <Link to="/login" className="p-1 rounded-2xl bg-gradient-secondary-tertiary hover:bg-gradient-tertiary-forth transition-all duration-300">
+        <Link to="/login?type=seller" className="p-1 rounded-2xl bg-gradient-secondary-tertiary hover:bg-gradient-tertiary-forth transition-all duration-300">
           <div className="bg-background p-6 rounded-xl text-center">
             <h2 className="text-xl font-bold text-main-text">{t('landing.sellerTitle')}</h2>
             <p className="text-gray-400 text-sm mt-2">{t('landing.sellerDescription')}</p>
@@ -17,7 +17,7 @@ export default function Landing() {
         </Link>
         
         {/* Consumer Entry */}
-        <Link to="/login" className="p-1 rounded-2xl bg-gradient-secondary-forth hover:bg-gradient-tertiary-forth transition-all duration-300">
+        <Link to="/login?type=subscriber" className="p-1 rounded-2xl bg-gradient-secondary-forth hover:bg-gradient-tertiary-forth transition-all duration-300">
           <div className="bg-background p-6 rounded-xl text-center">
             <h2 className="text-xl font-bold text-main-text">{t('landing.consumerTitle')}</h2>
             <p className="text-gray-400 text-sm mt-2">{t('landing.consumerDescription')}</p>

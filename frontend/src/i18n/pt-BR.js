@@ -61,6 +61,7 @@ export default {
     email: "Email",
     emailPlaceholder: "ex: ada-conceicao@cirino.com",
     accessAccount: "Acessar Conta",
+    createAccount: "Crie sua conta",
     clickToTest: "Clique para testar:",
     administrator: "👑 Administrador",
     adminUser: "Usuário Admin",
@@ -81,8 +82,34 @@ export default {
   landing: {
     sellerTitle: "Sou Vendedor",
     sellerDescription: "Gerenciar clientes e criar produtos.",
-    consumerTitle: "Sou Cliente",
+    consumerTitle: "Sou Assinante",
     consumerDescription: "Ver minhas assinaturas ativas."
+  },
+  
+  registration: {
+    seller: {
+      title: "Crie sua conta",
+      name: "Seu nome",
+      company: "Sua empresa",
+      cnpj: "CNPJ",
+      phone: "Telefone",
+      email: "E-mail",
+      address: "Endereço",
+      submit: "Cadastrar-se",
+      success: "Conta criada com sucesso!",
+      error: "Erro ao criar conta."
+    },
+    subscriber: {
+      title: "Crie sua conta",
+      name: "Seu nome",
+      email: "E-mail",
+      cpf: "CPF",
+      phone: "Telefone",
+      address: "Endereço",
+      submit: "Cadastrar-se",
+      success: "Conta criada com sucesso!",
+      error: "Erro ao criar conta."
+    }
   },
   
   consumer: {

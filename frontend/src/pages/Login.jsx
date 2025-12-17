@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { ENDPOINTS } from '../config/api';
 import { setUser } from '../utils/auth';
@@ -11,6 +11,8 @@ import { t } from '../i18n';
 export default function Login() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const userType = searchParams.get('type') || 'subscriber';
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -62,6 +64,15 @@ export default function Login() {
             i18nKey="login.accessAccount"
           />
         </form>
+
+        <div className="mt-4 text-center">
+          <Link
+            to={userType === 'seller' ? '/seller-registration' : '/subscriber-registration'}
+            className="text-secondary hover:text-tertiary transition-colors font-bold"
+          >
+            {t('login.createAccount')}
+          </Link>
+        </div>
 
         <div className="mt-8 pt-6 border-t border-gray-800 text-xs text-gray-400">
           <p className="font-bold mb-4 uppercase tracking-wider text-center">

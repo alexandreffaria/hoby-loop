@@ -13,6 +13,7 @@ export const API_BASE_URL = 'http://localhost:8080';
 export const ENDPOINTS = {
   // Auth
   LOGIN: `${API_BASE_URL}/login`,
+  REGISTER: `${API_BASE_URL}/register`,
   
   // Users
   UPDATE_USER: (userId) => `${API_BASE_URL}/users/${userId}`,

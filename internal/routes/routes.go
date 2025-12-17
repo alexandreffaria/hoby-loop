@@ -32,6 +32,7 @@ func SetupRouter() *gin.Engine {
 
 	// Auth routes
 	r.POST("/login", controllers.Login)
+	r.POST("/register", controllers.RegisterUser)
 	
 	// User routes
 	r.PUT("/users/:id", controllers.UpdateUser)
