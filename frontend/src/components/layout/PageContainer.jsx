@@ -11,10 +11,10 @@ export default function PageContainer({
   className = ''
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 p-6 font-sans">
+    <div className="min-h-screen p-6">
       <div className={`mx-auto ${maxWidth} ${className}`}>
         {title && (
-          <h1 className="text-xl font-black text-gray-800 uppercase mb-6">
+          <h1 className="text-2xl font-black uppercase mb-6 bg-gradient-secondary-tertiary text-transparent bg-clip-text">
             {title}
           </h1>
         )}

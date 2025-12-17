@@ -29,6 +29,11 @@ export const ENDPOINTS = {
   
   // Orders
   CREATE_ORDER: `${API_BASE_URL}/orders`,
+  
+  // Admin endpoints
+  ADMIN_USERS: `${API_BASE_URL}/admin/users`,
+  ADMIN_SUBSCRIPTIONS: `${API_BASE_URL}/admin/subscriptions`,
+  ADMIN_BASKETS: `${API_BASE_URL}/admin/baskets`,
 };
 
 export default ENDPOINTS;

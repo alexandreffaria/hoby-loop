@@ -22,14 +22,16 @@ type JsonData struct {
 }
 
 type UserJSON struct {
-	ID       uint   `json:"id"`
-	Role     string `json:"role"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	CNPJ     string `json:"cnpj,omitempty"`
-	CPF      string `json:"cpf,omitempty"`
-	Address  struct {
+	ID          uint   `json:"id"`
+	Role        string `json:"role"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	CNPJ        string `json:"cnpj,omitempty"`
+	CPF         string `json:"cpf,omitempty"`
+	IsActive    bool   `json:"is_active,omitempty"`
+	Permissions string `json:"permissions,omitempty"`
+	Address     struct {
 		Street  string `json:"street"`
 		Number  string `json:"number"`
 		City    string `json:"city"`
@@ -62,8 +64,27 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Run Migrations
-	db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
+	// Run Migrations with explicit field specification
+	fmt.Println("🔄 Running database migrations...")
+	
+	// First run AutoMigrate to handle standard fields
+	if err := db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{}); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
+	
+	// Explicitly ensure admin fields are properly added
+	adminFieldsMigrations := []string{
+		"ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active boolean DEFAULT true",
+		"ALTER TABLE users ADD COLUMN IF NOT EXISTS permissions text",
+	}
+	
+	for _, migration := range adminFieldsMigrations {
+		if err := db.Exec(migration).Error; err != nil {
+			log.Printf("⚠️ Migration warning: %v", err)
+		}
+	}
+	
+	fmt.Println("✅ Database schema updated successfully")
 
 	// 2. Read seed data file
 	absPath, _ := filepath.Abs("tools/data.json")
@@ -91,6 +112,8 @@ func main() {
 				Password:      u.Password,
 				CNPJ:          u.CNPJ,
 				CPF:           u.CPF,
+				IsActive:      u.IsActive,
+				Permissions:   u.Permissions,
 				AddressStreet: u.Address.Street,
 				AddressNumber: u.Address.Number,
 				AddressCity:   u.Address.City,

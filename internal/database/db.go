@@ -27,9 +27,24 @@ func Initialize() {
 	}
 
 	// Migrate the schema
+	fmt.Println("🔄 Running database migrations...")
+	
+	// First run AutoMigrate for standard fields
 	err = DB.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{})
 	if err != nil {
 		log.Fatal("Migration failed: ", err)
+	}
+	
+	// Explicitly ensure admin fields exist
+	adminFieldsMigrations := []string{
+		"ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active boolean DEFAULT true",
+		"ALTER TABLE users ADD COLUMN IF NOT EXISTS permissions text",
+	}
+	
+	for _, migration := range adminFieldsMigrations {
+		if err := DB.Exec(migration).Error; err != nil {
+			log.Printf("⚠️ Admin field migration warning: %v", err)
+		}
 	}
 
 	fmt.Println("🚀 Database connected and migrated successfully!")

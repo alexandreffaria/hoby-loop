@@ -15,11 +15,12 @@ func SetupRouter() *gin.Engine {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "X-User-ID"}
 	r.Use(cors.New(config))
 
-	// Apply response middleware
+	// Apply response and auth middleware
 	r.Use(middleware.ResponseMiddleware())
+	r.Use(middleware.AuthMiddleware())
 
 	// Health check
 	r.GET("/ping", func(c *gin.Context) {
@@ -47,6 +48,15 @@ func SetupRouter() *gin.Engine {
 	
 	// Order routes
 	r.POST("/orders", controllers.CreateOrder)
+	
+	// Admin routes with authentication
+	admin := r.Group("/admin")
+	admin.Use(middleware.RequireAdmin())
+	{
+		admin.GET("/users", controllers.GetAllUsers)
+		admin.GET("/subscriptions", controllers.GetAllSubscriptions)
+		admin.GET("/baskets", controllers.GetAllBaskets)
+	}
 
 	return r
 }

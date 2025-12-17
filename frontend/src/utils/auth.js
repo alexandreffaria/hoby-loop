@@ -30,6 +30,9 @@ export const isSeller = () => hasRole('seller');
 // Check if user is a consumer
 export const isConsumer = () => hasRole('consumer');
 
+// Check if user is an admin
+export const isAdmin = () => hasRole('admin');
+
 // Remove user data (logout)
 export const logout = () => {
   localStorage.removeItem('user');

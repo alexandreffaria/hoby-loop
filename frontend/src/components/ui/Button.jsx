@@ -15,9 +15,9 @@ export default function Button({
   const baseClasses = 'font-bold py-3 rounded-xl uppercase tracking-wide transition-transform active:scale-95';
   
   const variantClasses = {
-    primary: 'bg-gray-900 text-white hover:bg-black',
-    secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
-    outline: 'bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-50',
+    primary: 'bg-gradient-secondary-tertiary text-white hover:bg-gradient-tertiary-forth',
+    secondary: 'bg-gray-800 text-white hover:bg-gray-700',
+    outline: 'bg-transparent text-main-text border border-gray-700 hover:bg-gray-800',
     danger: 'bg-red-600 text-white hover:bg-red-700',
   };
   

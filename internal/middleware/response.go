@@ -79,3 +79,8 @@ func ServerError(c *gin.Context, details string) {
 func Unauthorized(c *gin.Context) {
 	Error(c, http.StatusUnauthorized, "Unauthorized", "")
 }
+
+// Forbidden is a helper for 403 forbidden errors
+func Forbidden(c *gin.Context, message string) {
+	Error(c, http.StatusForbidden, message, "")
+}

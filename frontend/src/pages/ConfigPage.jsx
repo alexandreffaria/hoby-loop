@@ -52,7 +52,7 @@ export default function ConfigPage() {
       title={userIsSeller ? 'Dados da Empresa' : 'Meus Dados'} 
       maxWidth="max-w-md"
     >
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-5">
+      <div className="bg-background p-6 rounded-2xl border border-gray-800 space-y-6">
         
         {/* Identity Section */}
         <Input
@@ -71,7 +71,6 @@ export default function ConfigPage() {
             className="w-full"
           />
           
-          {/* Conditional Field: CNPJ or CPF */}
           <Input
             label={userIsSeller ? 'CNPJ' : 'CPF'}
             name={userIsSeller ? "cnpj" : "cpf"}
@@ -82,8 +81,8 @@ export default function ConfigPage() {
         </div>
 
         {/* Address Section */}
-        <div className="pt-4 border-t border-gray-100">
-          <span className="block text-xs font-bold text-blue-500 uppercase mb-4">Endereço de Entrega</span>
+        <div className="pt-6 border-t border-gray-800">
+          <span className="block text-xs font-bold text-secondary uppercase mb-4">Endereço de Entrega</span>
           
           <div className="flex gap-3 mb-3">
             <Input
@@ -102,7 +101,7 @@ export default function ConfigPage() {
             />
           </div>
 
-          <div className="flex gap-3 mb-3">
+          <div className="flex gap-3">
             <Input
               name="address_street"
               placeholder="Rua"
@@ -120,16 +119,16 @@ export default function ConfigPage() {
           </div>
         </div>
 
-        <div className="pt-4">
-          <Button 
+        <div className="pt-6 border-t border-gray-800">
+          <Button
             onClick={handleSave}
             fullWidth
           >
             Salvar Alterações
           </Button>
-          <button 
-            onClick={() => navigate(-1)} 
-            className="w-full mt-3 text-gray-400 text-xs font-bold py-2 uppercase hover:text-gray-600"
+          <button
+            onClick={() => navigate(-1)}
+            className="w-full mt-3 text-gray-500 text-xs font-bold py-2 uppercase hover:text-gray-300 transition-colors"
           >
             Cancelar
           </button>

@@ -21,8 +21,14 @@ export default function Login() {
       // Save user to localStorage using our auth utility
       setUser(user);
       
-      // Navigate to the appropriate dashboard
-      navigate(user.role === 'seller' ? '/seller' : '/consumer');
+      // Navigate to the appropriate dashboard based on role
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else if (user.role === 'seller') {
+        navigate('/seller');
+      } else {
+        navigate('/consumer');
+      }
     } catch (error) {
       alert("Usuário não encontrado! Verifique os emails de teste abaixo.");
     }
@@ -32,12 +38,12 @@ export default function Login() {
 
   return (
     <PageContainer maxWidth="max-w-sm">
-      <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-        <h1 className="text-2xl font-black text-gray-800 mb-6 uppercase tracking-widest text-center">
+      <div className="bg-background p-8 rounded-3xl border border-gray-800">
+        <h1 className="text-3xl font-black text-main-text mb-6 uppercase tracking-widest text-center bg-gradient-secondary-tertiary text-transparent bg-clip-text">
           Entrar
         </h1>
         
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-6">
           <Input
             type="email"
             label="Email"
@@ -48,7 +54,7 @@ export default function Login() {
             required
           />
 
-          <Button 
+          <Button
             type="submit"
             variant="primary"
             fullWidth
@@ -57,28 +63,35 @@ export default function Login() {
           </Button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-100 text-xs text-gray-500">
-          <p className="font-bold mb-3 text-gray-400 uppercase tracking-wider">
+        <div className="mt-8 pt-6 border-t border-gray-800 text-xs text-gray-400">
+          <p className="font-bold mb-4 uppercase tracking-wider text-center">
             Clique para testar:
           </p>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <p className="font-bold text-blue-600 mb-1">🛍️ Vendedores</p>
-              <button onClick={() => fillEmail('ada-conceicao@cirino.com')} className="block hover:underline mb-1">
+              <p className="font-bold text-tertiary mb-2 text-center">👑 Administrador</p>
+              <button onClick={() => fillEmail('admin@hobyloop.com')} className="block w-full text-center hover:text-secondary transition-colors">
+                Admin User
+              </button>
+            </div>
+            
+            <div>
+              <p className="font-bold text-forth mb-2 text-center">🛍️ Vendedores</p>
+              <button onClick={() => fillEmail('ada-conceicao@cirino.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
                 Viana (Seller 1)
               </button>
-              <button onClick={() => fillEmail('lunaferreira@da.com')} className="block hover:underline">
+              <button onClick={() => fillEmail('lunaferreira@da.com')} className="block w-full text-center hover:text-secondary transition-colors">
                 Barros Ferreira (Seller 2)
               </button>
             </div>
 
             <div>
-              <p className="font-bold text-green-600 mb-1">👤 Clientes</p>
-              <button onClick={() => fillEmail('aliciacirino@example.com')} className="block hover:underline mb-1">
+              <p className="font-bold text-green-400 mb-2 text-center">👤 Clientes</p>
+              <button onClick={() => fillEmail('aliciacirino@example.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
                 Luiz Gustavo (User 10)
               </button>
-              <button onClick={() => fillEmail('enrico30@example.org')} className="block hover:underline">
+              <button onClick={() => fillEmail('enrico30@example.org')} className="block w-full text-center hover:text-secondary transition-colors">
                 Eduardo (User 11)
               </button>
             </div>

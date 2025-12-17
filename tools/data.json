@@ -81,6 +81,24 @@
       }
     },
     {
+      "id": 6,
+      "role": "admin",
+      "name": "Admin User",
+      "email": "admin@hobyloop.com",
+      "password": "admin123",
+      "cnpj": "",
+      "cpf": "",
+      "is_active": true,
+      "permissions": "{\"dashboard\":true,\"users\":true,\"baskets\":true,\"subscriptions\":true,\"orders\":true,\"reports\":true}",
+      "address": {
+        "street": "Admin Street",
+        "number": "123",
+        "city": "Florianópolis",
+        "state": "SC",
+        "zip_code": "88000-000"
+      }
+    },
+    {
       "id": 10,
       "role": "consumer",
       "name": "Luiz Gustavo da Mota",

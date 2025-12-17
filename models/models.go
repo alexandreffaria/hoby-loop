@@ -4,17 +4,21 @@ import (
 	"gorm.io/gorm"
 )
 
-// User represents any user of the application (seller or consumer)
+// User represents any user of the application (seller, consumer, or admin)
 type User struct {
 	gorm.Model
 	Email         string `json:"email" gorm:"unique"`
 	Password      string `json:"-"`
-	Role          string `json:"role"`
+	Role          string `json:"role"`  // Values: "seller", "consumer", "admin"
 	Name          string `json:"name"`
 	
 	// Business identification fields
 	CNPJ          string `json:"cnpj,omitempty"`    // Only for sellers
 	CPF           string `json:"cpf,omitempty"`     // Only for consumers
+	
+	// Admin-specific fields
+	IsActive      bool   `json:"is_active" gorm:"default:true"` // For disabling admin accounts
+	Permissions   string `json:"permissions,omitempty"`         // JSON string of admin permissions
 	
 	// Address fields
 	AddressStreet string `json:"address_street"`

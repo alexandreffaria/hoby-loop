@@ -16,7 +16,7 @@ export default function Input({
   return (
     <div className={className}>
       {label && (
-        <label htmlFor={name} className="block text-xs font-bold text-gray-400 uppercase mb-1">
+        <label htmlFor={name} className="block text-xs font-bold text-gray-400 uppercase mb-2">
           {label}
         </label>
       )}
@@ -28,7 +28,7 @@ export default function Input({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="w-full bg-gray-50 p-3 rounded-xl text-sm outline-none border border-transparent focus:border-blue-500 transition-colors"
+        className="w-full bg-gray-900 p-3 rounded-xl text-sm outline-none border border-gray-800 focus:border-secondary transition-colors"
       />
     </div>
   );

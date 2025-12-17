@@ -3,17 +3,21 @@ import Login from './pages/Login'
 import SellerDashboard from './pages/SellerDashboard'
 import ConsumerDashboard from './pages/ConsumerDashboard'
 import ConsumerCheckout from './pages/ConsumerCheckout'
-import ConfigPage from './pages/ConfigPage' // <--- Import this
+import ConfigPage from './pages/ConfigPage'
+import AdminDashboard from './pages/AdminDashboard'
+import Landing from './pages/Landing'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/seller" element={<SellerDashboard />} />
         <Route path="/consumer" element={<ConsumerDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/checkout/:id" element={<ConsumerCheckout />} />
-        <Route path="/config" element={<ConfigPage />} /> {/* <--- Add Route */}
+        <Route path="/config" element={<ConfigPage />} />
       </Routes>
     </BrowserRouter>
   )

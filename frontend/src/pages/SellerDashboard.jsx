@@ -42,55 +42,58 @@ export default function SellerDashboard() {
   }
 
   return (
-    <div className="max-w-md mx-auto min-h-screen p-5 font-sans text-gray-800">
+    <div className="max-w-md mx-auto min-h-screen p-5 font-sans text-main-text">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-xl font-black text-gray-800 uppercase">Dashboard</h1>
+          <h1 className="text-2xl font-black uppercase bg-gradient-secondary-tertiary text-transparent bg-clip-text">Dashboard</h1>
           <p className="text-xs text-gray-400">Olá, {user?.name}</p>
         </div>
         
         <div className="flex gap-3">
-          {/* NEW: Config Button */}
           <button onClick={() => navigate('/config')} className="text-2xl" title="Configurações">⚙️</button>
           <button onClick={logout} className="text-xs text-red-400 font-bold underline self-center">Sair</button>
         </div>
       </div>
-           <div className="flex bg-white rounded-lg p-1 shadow-sm border border-gray-100 mb-6">
-          <button 
-            onClick={() => setActiveTab('clients')}
-            className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-colors ${activeTab === 'clients' ? 'bg-blue-100 text-blue-600' : 'text-gray-400'}`}
-          >
-            CLIENTES
-          </button>
-          <button 
-            onClick={() => setActiveTab('products')}
-            className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-colors ${activeTab === 'products' ? 'bg-blue-100 text-blue-600' : 'text-gray-400'}`}
-          >
-            PRODUTOS
-          </button>
+      <div className="flex bg-background rounded-lg p-1 mb-6 border border-gray-800">
+        <button
+          onClick={() => setActiveTab('clients')}
+          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'clients' ? 'bg-gradient-secondary-tertiary text-white' : 'text-gray-400'}`}
+        >
+          CLIENTES
+        </button>
+        <button
+          onClick={() => setActiveTab('products')}
+          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'products' ? 'bg-gradient-secondary-tertiary text-white' : 'text-gray-400'}`}
+        >
+          PRODUTOS
+        </button>
       </div>
 
       {activeTab === 'clients' ? (
         <div className="space-y-4">
-          {subscriptions.length === 0 && <p className="text-center text-gray-400 text-sm">Nenhum assinante ativo.</p>}
+          {subscriptions.length === 0 && <p className="text-center text-gray-500 text-sm">Nenhum assinante ativo.</p>}
           {subscriptions.map(sub => (
-            <div key={sub.ID} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-              <h2 className="text-lg font-black uppercase">{sub.user.name}</h2>
-              <p className="text-sm text-gray-500 font-medium mb-3">{sub.basket.name}</p>
-              <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold uppercase rounded-lg">{sub.frequency}</span>
+            <div key={sub.ID} className="p-1 rounded-2xl bg-gradient-tertiary-forth">
+              <div className="bg-background p-4 rounded-xl">
+                <h2 className="text-lg font-black uppercase text-main-text">{sub.user.name}</h2>
+                <p className="text-sm text-gray-400 font-medium mb-3">{sub.basket.name}</p>
+                <span className="px-3 py-1 bg-gray-800 text-secondary text-xs font-bold uppercase rounded-lg">{sub.frequency}</span>
+              </div>
             </div>
           ))}
         </div>
       ) : (
         <div className="space-y-4">
-           {baskets.length === 0 && <p className="text-center text-gray-400 text-sm">Nenhum produto cadastrado.</p>}
+           {baskets.length === 0 && <p className="text-center text-gray-500 text-sm">Nenhum produto cadastrado.</p>}
            {baskets.map(basket => (
-            <div key={basket.ID} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-              <h2 className="text-lg font-black uppercase text-gray-800">{basket.name}</h2>
-              <p className="text-xl font-bold text-gray-900 mb-4">R$ {basket.price}</p>
-              <button onClick={() => copyLink(basket.ID)} className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl text-sm uppercase">
-                🔗 Copiar Link
-              </button>
+            <div key={basket.ID} className="p-1 rounded-2xl bg-gradient-secondary-forth">
+              <div className="bg-background p-4 rounded-xl">
+                <h2 className="text-lg font-black uppercase text-main-text">{basket.name}</h2>
+                <p className="text-xl font-bold text-main-text mb-4">R$ {basket.price}</p>
+                <Button onClick={() => copyLink(basket.ID)} fullWidth>
+                  🔗 Copiar Link
+                </Button>
+              </div>
             </div>
           ))}
         </div>
