@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { t } from '../i18n'
+import Button from '../components/ui/Button'
 
 export default function SellerDashboard() {
   const [activeTab, setActiveTab] = useState('clients')
@@ -32,7 +34,7 @@ export default function SellerDashboard() {
   const copyLink = (id) => {
     const link = `${window.location.origin}/checkout/${id}`
     navigator.clipboard.writeText(link)
-    alert("Link copiado! Envie para seu cliente:\n" + link)
+    alert(t("alerts.linkCopied", { link }))
   }
 
   // Logout Helper
@@ -45,33 +47,33 @@ export default function SellerDashboard() {
     <div className="max-w-md mx-auto min-h-screen p-5 font-sans text-main-text">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-black uppercase bg-gradient-secondary-tertiary text-transparent bg-clip-text">Dashboard</h1>
-          <p className="text-xs text-gray-400">Olá, {user?.name}</p>
+          <h1 className="text-2xl font-black uppercase bg-gradient-secondary-tertiary text-transparent bg-clip-text">{t('seller.title')}</h1>
+          <p className="text-xs text-gray-400">{t('common.welcome', { name: user?.name })}</p>
         </div>
         
         <div className="flex gap-3">
-          <button onClick={() => navigate('/config')} className="text-2xl" title="Configurações">⚙️</button>
-          <button onClick={logout} className="text-xs text-red-400 font-bold underline self-center">Sair</button>
+          <button onClick={() => navigate('/config')} className="text-2xl" title={t('common.settings')}>⚙️</button>
+          <button onClick={logout} className="text-xs text-red-400 font-bold underline self-center">{t('common.logout')}</button>
         </div>
       </div>
-      <div className="flex bg-background rounded-lg p-1 mb-6 border border-gray-800">
+      <div className="flex bg-background rounded-lg p-1 mb-6 border-2 border-transparent bg-gradient-to-r from-secondary to-tertiary">
         <button
           onClick={() => setActiveTab('clients')}
-          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'clients' ? 'bg-gradient-secondary-tertiary text-white' : 'text-gray-400'}`}
+          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'clients' ? 'bg-background text-main-text' : 'text-gray-400'}`}
         >
-          CLIENTES
+          {t('seller.tabClients')}
         </button>
         <button
           onClick={() => setActiveTab('products')}
-          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'products' ? 'bg-gradient-secondary-tertiary text-white' : 'text-gray-400'}`}
+          className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 ${activeTab === 'products' ? 'bg-background text-main-text' : 'text-gray-400'}`}
         >
-          PRODUTOS
+          {t('seller.tabProducts')}
         </button>
       </div>
 
       {activeTab === 'clients' ? (
         <div className="space-y-4">
-          {subscriptions.length === 0 && <p className="text-center text-gray-500 text-sm">Nenhum assinante ativo.</p>}
+          {subscriptions.length === 0 && <p className="text-center text-gray-500 text-sm">{t('seller.noActiveSubscribers')}</p>}
           {subscriptions.map(sub => (
             <div key={sub.ID} className="p-1 rounded-2xl bg-gradient-tertiary-forth">
               <div className="bg-background p-4 rounded-xl">
@@ -84,15 +86,17 @@ export default function SellerDashboard() {
         </div>
       ) : (
         <div className="space-y-4">
-           {baskets.length === 0 && <p className="text-center text-gray-500 text-sm">Nenhum produto cadastrado.</p>}
+           {baskets.length === 0 && <p className="text-center text-gray-500 text-sm">{t('seller.noRegisteredProducts')}</p>}
            {baskets.map(basket => (
             <div key={basket.ID} className="p-1 rounded-2xl bg-gradient-secondary-forth">
               <div className="bg-background p-4 rounded-xl">
                 <h2 className="text-lg font-black uppercase text-main-text">{basket.name}</h2>
                 <p className="text-xl font-bold text-main-text mb-4">R$ {basket.price}</p>
-                <Button onClick={() => copyLink(basket.ID)} fullWidth>
-                  🔗 Copiar Link
-                </Button>
+                <Button
+                  onClick={() => copyLink(basket.ID)}
+                  fullWidth
+                  i18nKey="common.copyLink"
+                />
               </div>
             </div>
           ))}

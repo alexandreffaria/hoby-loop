@@ -2,86 +2,726 @@
   "users": [
     {
       "id": 1,
-      "role": "seller",
-      "name": "Viana",
-      "email": "ada-conceicao@cirino.com",
+      "role": "vendedor",
+      "name": "Monteiro Abreu S/A",
+      "email": "teixeiramaysa@fernandes.com",
       "password": "password123",
-      "cnpj": "02.164.897/0001-14",
+      "cnpj": "51.987.326/0001-95",
       "cpf": "",
       "address": {
-        "street": "Quadra Maria Laura Castro",
-        "number": "486",
-        "city": "Pastor do Oeste",
-        "state": "PI",
-        "zip_code": "27635-866"
+        "street": "Residencial Cardoso",
+        "number": "831",
+        "city": "Pires",
+        "state": "AP",
+        "zip_code": "97075-446"
       }
     },
     {
       "id": 2,
-      "role": "seller",
-      "name": "Barros Ferreira Ltda.",
-      "email": "lunaferreira@da.com",
+      "role": "vendedor",
+      "name": "Cunha da Cunha - ME",
+      "email": "nascimentokamilly@sales.com",
       "password": "password123",
-      "cnpj": "28.405.973/0001-20",
+      "cnpj": "59.712.438/0001-45",
       "cpf": "",
       "address": {
-        "street": "Distrito Gomes",
-        "number": "593",
-        "city": "Aparecida",
-        "state": "PR",
-        "zip_code": "78233256"
+        "street": "Parque Montenegro",
+        "number": "652",
+        "city": "Freitas",
+        "state": "RN",
+        "zip_code": "82255-470"
       }
     },
     {
       "id": 3,
-      "role": "seller",
-      "name": "Souza",
-      "email": "qfernandes@nunes.com",
+      "role": "vendedor",
+      "name": "Abreu",
+      "email": "maria-claracosta@pinto.com",
       "password": "password123",
-      "cnpj": "29.130.546/0001-49",
+      "cnpj": "10.594.876/0001-67",
       "cpf": "",
       "address": {
-        "street": "Lago Daniel Cunha",
-        "number": "674",
-        "city": "da Rosa",
-        "state": "MT",
-        "zip_code": "24343-381"
+        "street": "Morro Luana Lopes",
+        "number": "294",
+        "city": "Aparecida",
+        "state": "RO",
+        "zip_code": "59788-206"
       }
     },
     {
       "id": 4,
-      "role": "seller",
-      "name": "Marques Fogaça S/A",
-      "email": "hpimenta@rocha.com",
+      "role": "vendedor",
+      "name": "Gonçalves Ltda.",
+      "email": "lorenamontenegro@sales.com",
       "password": "password123",
-      "cnpj": "92.736.405/0001-00",
+      "cnpj": "16.704.598/0001-30",
       "cpf": "",
       "address": {
-        "street": "Fazenda Yan Montenegro",
-        "number": "635",
-        "city": "Guerra",
-        "state": "TO",
-        "zip_code": "01064340"
+        "street": "Passarela Souza",
+        "number": "873",
+        "city": "da Mota",
+        "state": "PI",
+        "zip_code": "32965080"
       }
     },
     {
       "id": 5,
-      "role": "seller",
-      "name": "Camargo Camargo - ME",
-      "email": "isaqueda-rosa@marques.com",
+      "role": "vendedor",
+      "name": "Silva",
+      "email": "machadothomas@rocha.com",
       "password": "password123",
-      "cnpj": "39.876.214/0001-61",
+      "cnpj": "96.127.508/0001-24",
       "cpf": "",
       "address": {
-        "street": "Aeroporto Jesus",
-        "number": "298",
-        "city": "Pimenta",
-        "state": "BA",
-        "zip_code": "48823-654"
+        "street": "Favela Alana Vargas",
+        "number": "236",
+        "city": "da Mota do Galho",
+        "state": "PR",
+        "zip_code": "04907956"
       }
     },
     {
-      "id": 6,
+      "id": 10,
+      "role": "assinante",
+      "name": "Thiago Castro",
+      "email": "andrecunha@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "534.016.792-52",
+      "address": {
+        "street": "Praia de Duarte",
+        "number": "7721",
+        "city": "Gonçalves",
+        "state": "AC",
+        "zip_code": "32426756"
+      }
+    },
+    {
+      "id": 11,
+      "role": "assinante",
+      "name": "Ana Beatriz Caldeira",
+      "email": "ravi-luccaabreu@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "436.018.952-42",
+      "address": {
+        "street": "Área de Costa",
+        "number": "9319",
+        "city": "Lima",
+        "state": "SP",
+        "zip_code": "26124759"
+      }
+    },
+    {
+      "id": 12,
+      "role": "assinante",
+      "name": "Francisco Sampaio",
+      "email": "nathan23@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "532.097.614-34",
+      "address": {
+        "street": "Rodovia Luiz Felipe Souza",
+        "number": "1360",
+        "city": "Ribeiro",
+        "state": "RN",
+        "zip_code": "20058142"
+      }
+    },
+    {
+      "id": 13,
+      "role": "assinante",
+      "name": "Gabrielly Macedo",
+      "email": "cauecirino@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "605.894.132-60",
+      "address": {
+        "street": "Quadra Lima",
+        "number": "7959",
+        "city": "Teixeira do Sul",
+        "state": "PI",
+        "zip_code": "72245381"
+      }
+    },
+    {
+      "id": 14,
+      "role": "assinante",
+      "name": "Mirella Gomes",
+      "email": "fonsecatheo@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "857.139.204-88",
+      "address": {
+        "street": "Sítio Liz Silveira",
+        "number": "7067",
+        "city": "Souza do Amparo",
+        "state": "MG",
+        "zip_code": "59704890"
+      }
+    },
+    {
+      "id": 15,
+      "role": "assinante",
+      "name": "Stella Farias",
+      "email": "umendes@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "346.981.752-91",
+      "address": {
+        "street": "Núcleo Pedro Alves",
+        "number": "333",
+        "city": "Dias de Goiás",
+        "state": "RJ",
+        "zip_code": "14199-453"
+      }
+    },
+    {
+      "id": 16,
+      "role": "assinante",
+      "name": "Valentim Ribeiro",
+      "email": "xbrito@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "504.713.869-01",
+      "address": {
+        "street": "Aeroporto de da Mata",
+        "number": "3626",
+        "city": "Nunes de Aragão",
+        "state": "RS",
+        "zip_code": "40241074"
+      }
+    },
+    {
+      "id": 17,
+      "role": "assinante",
+      "name": "Allana Camargo",
+      "email": "luana40@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "245.710.983-32",
+      "address": {
+        "street": "Campo de Macedo",
+        "number": "8030",
+        "city": "Fernandes da Serra",
+        "state": "MG",
+        "zip_code": "85231-775"
+      }
+    },
+    {
+      "id": 18,
+      "role": "assinante",
+      "name": "Matheus Barbosa",
+      "email": "augustoramos@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "768.435.291-19",
+      "address": {
+        "street": "Lagoa Novaes",
+        "number": "6312",
+        "city": "Azevedo",
+        "state": "AP",
+        "zip_code": "00631-136"
+      }
+    },
+    {
+      "id": 19,
+      "role": "assinante",
+      "name": "Hellena Fonseca",
+      "email": "mateus10@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "601.734.259-25",
+      "address": {
+        "street": "Trecho Sampaio",
+        "number": "1723",
+        "city": "da Rocha",
+        "state": "MG",
+        "zip_code": "14432334"
+      }
+    },
+    {
+      "id": 20,
+      "role": "assinante",
+      "name": "Dr. Mathias Albuquerque",
+      "email": "qpeixoto@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "734.062.589-56",
+      "address": {
+        "street": "Distrito Luara Azevedo",
+        "number": "2138",
+        "city": "Brito das Pedras",
+        "state": "CE",
+        "zip_code": "88843-326"
+      }
+    },
+    {
+      "id": 21,
+      "role": "assinante",
+      "name": "Pedro Miguel da Rocha",
+      "email": "brenocassiano@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "207.591.468-02",
+      "address": {
+        "street": "Aeroporto de Sá",
+        "number": "4616",
+        "city": "Aragão",
+        "state": "TO",
+        "zip_code": "43944-267"
+      }
+    },
+    {
+      "id": 22,
+      "role": "assinante",
+      "name": "Gustavo Henrique Cardoso",
+      "email": "dleao@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "047.925.863-56",
+      "address": {
+        "street": "Ladeira de Lima",
+        "number": "4139",
+        "city": "Rios Verde",
+        "state": "AM",
+        "zip_code": "28166789"
+      }
+    },
+    {
+      "id": 23,
+      "role": "assinante",
+      "name": "Srta. Maya Sousa",
+      "email": "kfreitas@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "517.926.340-99",
+      "address": {
+        "street": "Parque Daniel Brito",
+        "number": "168",
+        "city": "Rodrigues das Pedras",
+        "state": "MT",
+        "zip_code": "62676130"
+      }
+    },
+    {
+      "id": 24,
+      "role": "assinante",
+      "name": "Isabella da Mota",
+      "email": "correiajoao-guilherme@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "103.975.824-04",
+      "address": {
+        "street": "Estação da Luz",
+        "number": "7727",
+        "city": "Fernandes dos Dourados",
+        "state": "RN",
+        "zip_code": "02630894"
+      }
+    },
+    {
+      "id": 25,
+      "role": "assinante",
+      "name": "Ian Nunes",
+      "email": "freitasdavi-lucca@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "912.584.607-85",
+      "address": {
+        "street": "Campo Santos",
+        "number": "7077",
+        "city": "da Mota",
+        "state": "PA",
+        "zip_code": "61564-889"
+      }
+    },
+    {
+      "id": 26,
+      "role": "assinante",
+      "name": "Sr. José Pedro Guerra",
+      "email": "xsales@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "308.627.459-00",
+      "address": {
+        "street": "Loteamento de Araújo",
+        "number": "1674",
+        "city": "Brito do Oeste",
+        "state": "MG",
+        "zip_code": "49872814"
+      }
+    },
+    {
+      "id": 27,
+      "role": "assinante",
+      "name": "Sr. José Pedro Alves",
+      "email": "leandrosilva@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "035.916.827-21",
+      "address": {
+        "street": "Distrito Maria Isis da Costa",
+        "number": "5725",
+        "city": "Pimenta",
+        "state": "AL",
+        "zip_code": "38342-482"
+      }
+    },
+    {
+      "id": 28,
+      "role": "assinante",
+      "name": "Sr. Ravy Siqueira",
+      "email": "aurorapastor@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "410.256.738-08",
+      "address": {
+        "street": "Núcleo Ana Luiza Santos",
+        "number": "5228",
+        "city": "Gomes",
+        "state": "RO",
+        "zip_code": "98642-165"
+      }
+    },
+    {
+      "id": 29,
+      "role": "assinante",
+      "name": "Ana Lívia Campos",
+      "email": "bruna85@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "108.639.245-06",
+      "address": {
+        "street": "Setor de Campos",
+        "number": "6134",
+        "city": "Machado de Barros",
+        "state": "PE",
+        "zip_code": "14418276"
+      }
+    },
+    {
+      "id": 30,
+      "role": "assinante",
+      "name": "Luiz Fernando Moraes",
+      "email": "laiscirino@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "029.517.836-12",
+      "address": {
+        "street": "Viaduto Ramos",
+        "number": "1950",
+        "city": "Casa Grande",
+        "state": "DF",
+        "zip_code": "59947-872"
+      }
+    },
+    {
+      "id": 31,
+      "role": "assinante",
+      "name": "Cauã Machado",
+      "email": "peixotovinicius@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "820.376.195-02",
+      "address": {
+        "street": "Favela de Pimenta",
+        "number": "224",
+        "city": "Brito do Campo",
+        "state": "PI",
+        "zip_code": "83511096"
+      }
+    },
+    {
+      "id": 32,
+      "role": "assinante",
+      "name": "Raul Machado",
+      "email": "danilomendonca@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "162.793.854-00",
+      "address": {
+        "street": "Favela de Macedo",
+        "number": "1344",
+        "city": "da Luz de Vasconcelos",
+        "state": "ES",
+        "zip_code": "50013-600"
+      }
+    },
+    {
+      "id": 33,
+      "role": "assinante",
+      "name": "Francisco da Mata",
+      "email": "pmachado@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "248.973.150-50",
+      "address": {
+        "street": "Vereda Jesus",
+        "number": "1748",
+        "city": "da Rosa",
+        "state": "AM",
+        "zip_code": "07604-657"
+      }
+    },
+    {
+      "id": 34,
+      "role": "assinante",
+      "name": "Raul Campos",
+      "email": "theoduarte@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "190.638.754-01",
+      "address": {
+        "street": "Parque Novais",
+        "number": "1438",
+        "city": "Gonçalves de da Mata",
+        "state": "PR",
+        "zip_code": "26066-419"
+      }
+    },
+    {
+      "id": 35,
+      "role": "assinante",
+      "name": "Maria Liz Gomes",
+      "email": "guerramiguel@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "856.412.370-35",
+      "address": {
+        "street": "Distrito Heloisa Aparecida",
+        "number": "118",
+        "city": "Barbosa de Minas",
+        "state": "GO",
+        "zip_code": "81486-785"
+      }
+    },
+    {
+      "id": 36,
+      "role": "assinante",
+      "name": "João Lucas Rocha",
+      "email": "cauacamargo@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "139.268.475-73",
+      "address": {
+        "street": "Ladeira Fernandes",
+        "number": "3568",
+        "city": "Pimenta do Galho",
+        "state": "MT",
+        "zip_code": "93509-332"
+      }
+    },
+    {
+      "id": 37,
+      "role": "assinante",
+      "name": "Davi Lucas Vasconcelos",
+      "email": "aylagomes@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "065.179.843-48",
+      "address": {
+        "street": "Travessa Sampaio",
+        "number": "7705",
+        "city": "Lopes do Amparo",
+        "state": "CE",
+        "zip_code": "03539-903"
+      }
+    },
+    {
+      "id": 38,
+      "role": "assinante",
+      "name": "João Felipe da Cruz",
+      "email": "danilo97@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "497.312.568-73",
+      "address": {
+        "street": "Jardim Ana Laura Borges",
+        "number": "6462",
+        "city": "Andrade",
+        "state": "MA",
+        "zip_code": "49669098"
+      }
+    },
+    {
+      "id": 39,
+      "role": "assinante",
+      "name": "Mariana Camargo",
+      "email": "leaoerick@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "895.672.134-37",
+      "address": {
+        "street": "Avenida de Nascimento",
+        "number": "2867",
+        "city": "Camargo",
+        "state": "RS",
+        "zip_code": "77555081"
+      }
+    },
+    {
+      "id": 40,
+      "role": "assinante",
+      "name": "Maria Cecília da Paz",
+      "email": "ian09@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "473.659.081-57",
+      "address": {
+        "street": "Viaduto Murilo das Neves",
+        "number": "4178",
+        "city": "Rios de Araújo",
+        "state": "RR",
+        "zip_code": "18784042"
+      }
+    },
+    {
+      "id": 41,
+      "role": "assinante",
+      "name": "Benício da Costa",
+      "email": "zpinto@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "583.706.412-53",
+      "address": {
+        "street": "Área de Andrade",
+        "number": "7166",
+        "city": "Aragão",
+        "state": "CE",
+        "zip_code": "64750-044"
+      }
+    },
+    {
+      "id": 42,
+      "role": "assinante",
+      "name": "Kevin da Paz",
+      "email": "ravymoraes@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "906.754.123-07",
+      "address": {
+        "street": "Recanto de Barros",
+        "number": "9042",
+        "city": "Rodrigues do Norte",
+        "state": "PR",
+        "zip_code": "95689055"
+      }
+    },
+    {
+      "id": 43,
+      "role": "assinante",
+      "name": "Ana Liz Marques",
+      "email": "qrezende@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "081.453.769-39",
+      "address": {
+        "street": "Feira Novais",
+        "number": "1446",
+        "city": "Cassiano de Gomes",
+        "state": "PB",
+        "zip_code": "93901-039"
+      }
+    },
+    {
+      "id": 44,
+      "role": "assinante",
+      "name": "Srta. Raquel Brito",
+      "email": "leandrocostela@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "586.972.314-00",
+      "address": {
+        "street": "Praça de Cavalcante",
+        "number": "4869",
+        "city": "Correia",
+        "state": "PE",
+        "zip_code": "04316-757"
+      }
+    },
+    {
+      "id": 45,
+      "role": "assinante",
+      "name": "Pedro Miguel Andrade",
+      "email": "freitasbarbara@example.org",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "057.862.941-02",
+      "address": {
+        "street": "Estação Bruna Andrade",
+        "number": "5118",
+        "city": "Guerra",
+        "state": "CE",
+        "zip_code": "72024760"
+      }
+    },
+    {
+      "id": 46,
+      "role": "assinante",
+      "name": "Sr. Davi Lucca Cassiano",
+      "email": "samaysa@example.net",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "128.463.097-87",
+      "address": {
+        "street": "Vila Stella da Rocha",
+        "number": "6501",
+        "city": "Garcia do Amparo",
+        "state": "GO",
+        "zip_code": "24006-266"
+      }
+    },
+    {
+      "id": 47,
+      "role": "assinante",
+      "name": "Maria Julia Alves",
+      "email": "qmendes@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "519.608.274-30",
+      "address": {
+        "street": "Lago Machado",
+        "number": "5040",
+        "city": "Oliveira",
+        "state": "MS",
+        "zip_code": "22690478"
+      }
+    },
+    {
+      "id": 48,
+      "role": "assinante",
+      "name": "Heitor Vargas",
+      "email": "wmacedo@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "821.963.745-55",
+      "address": {
+        "street": "Passarela Pedro Souza",
+        "number": "4527",
+        "city": "Rocha de Silveira",
+        "state": "AM",
+        "zip_code": "36887-773"
+      }
+    },
+    {
+      "id": 49,
+      "role": "assinante",
+      "name": "Srta. Sarah Viana",
+      "email": "guerratheodoro@example.com",
+      "password": "password123",
+      "cnpj": "",
+      "cpf": "947.086.351-84",
+      "address": {
+        "street": "Área Sales",
+        "number": "2963",
+        "city": "das Neves",
+        "state": "RN",
+        "zip_code": "95500-264"
+      }
+    },
+    {
+      "id": 50,
       "role": "admin",
       "name": "Admin User",
       "email": "admin@hobyloop.com",
@@ -97,895 +737,114 @@
         "state": "SC",
         "zip_code": "88000-000"
       }
-    },
-    {
-      "id": 10,
-      "role": "consumer",
-      "name": "Luiz Gustavo da Mota",
-      "email": "aliciacirino@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "960.172.583-03",
-      "address": {
-        "street": "Vereda Lopes",
-        "number": "9074",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "96716099"
-      }
-    },
-    {
-      "id": 11,
-      "role": "consumer",
-      "name": "Eduardo Nascimento",
-      "email": "enrico30@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "820.593.417-79",
-      "address": {
-        "street": "Fazenda de Vieira",
-        "number": "6155",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "70284352"
-      }
-    },
-    {
-      "id": 12,
-      "role": "consumer",
-      "name": "Hellena Oliveira",
-      "email": "asilva@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "617.402.853-44",
-      "address": {
-        "street": "Campo Pinto",
-        "number": "3510",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "45538-871"
-      }
-    },
-    {
-      "id": 13,
-      "role": "consumer",
-      "name": "Alexandre Campos",
-      "email": "monteirorodrigo@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "804.251.739-41",
-      "address": {
-        "street": "Alameda Mariah Rezende",
-        "number": "1625",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "96124765"
-      }
-    },
-    {
-      "id": 14,
-      "role": "consumer",
-      "name": "Ana Vitória da Rocha",
-      "email": "castropedro-lucas@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "937.802.156-59",
-      "address": {
-        "street": "Condomínio de Ferreira",
-        "number": "1594",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "50484927"
-      }
-    },
-    {
-      "id": 15,
-      "role": "consumer",
-      "name": "Bella Azevedo",
-      "email": "ksiqueira@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "431.569.872-55",
-      "address": {
-        "street": "Recanto Benicio Borges",
-        "number": "644",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "11787-579"
-      }
-    },
-    {
-      "id": 16,
-      "role": "consumer",
-      "name": "Vinícius Vargas",
-      "email": "nascimentoaugusto@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "028.157.693-95",
-      "address": {
-        "street": "Campo Ferreira",
-        "number": "8884",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "67113980"
-      }
-    },
-    {
-      "id": 17,
-      "role": "consumer",
-      "name": "Davi Luiz da Mota",
-      "email": "ribeiropaulo@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "475.120.938-88",
-      "address": {
-        "street": "Campo Dante Rocha",
-        "number": "2536",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "69238769"
-      }
-    },
-    {
-      "id": 18,
-      "role": "consumer",
-      "name": "Olivia Alves",
-      "email": "erick99@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "026.319.457-43",
-      "address": {
-        "street": "Parque de Teixeira",
-        "number": "1177",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "21930-929"
-      }
-    },
-    {
-      "id": 19,
-      "role": "consumer",
-      "name": "Alana Rodrigues",
-      "email": "freitaslucca@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "952.401.876-49",
-      "address": {
-        "street": "Lago Moreira",
-        "number": "3533",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "74620-603"
-      }
-    },
-    {
-      "id": 20,
-      "role": "consumer",
-      "name": "Pedro Miguel Pires",
-      "email": "vieirasophie@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "802.691.357-40",
-      "address": {
-        "street": "Jardim Barros",
-        "number": "8774",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "60277-307"
-      }
-    },
-    {
-      "id": 21,
-      "role": "consumer",
-      "name": "Amanda Ferreira",
-      "email": "cecilia53@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "912.604.758-67",
-      "address": {
-        "street": "Conjunto Marina Pastor",
-        "number": "5810",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "09220-833"
-      }
-    },
-    {
-      "id": 22,
-      "role": "consumer",
-      "name": "Heloisa Viana",
-      "email": "urios@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "047.536.189-00",
-      "address": {
-        "street": "Conjunto João Lucas Novaes",
-        "number": "7139",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "72457-278"
-      }
-    },
-    {
-      "id": 23,
-      "role": "consumer",
-      "name": "João Lucas Lopes",
-      "email": "henryramos@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "508.397.146-10",
-      "address": {
-        "street": "Condomínio Moraes",
-        "number": "8049",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "42099-508"
-      }
-    },
-    {
-      "id": 24,
-      "role": "consumer",
-      "name": "Bento Sampaio",
-      "email": "acasa-grande@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "137.294.568-73",
-      "address": {
-        "street": "Travessa de Nogueira",
-        "number": "42",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "54673-754"
-      }
-    },
-    {
-      "id": 25,
-      "role": "consumer",
-      "name": "Gael Henrique Borges",
-      "email": "camposyan@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "470.869.512-85",
-      "address": {
-        "street": "Jardim Anthony Barbosa",
-        "number": "977",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "48067-897"
-      }
-    },
-    {
-      "id": 26,
-      "role": "consumer",
-      "name": "Maria Isis Gomes",
-      "email": "yuri49@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "783.602.154-80",
-      "address": {
-        "street": "Setor de Leão",
-        "number": "633",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "38283-686"
-      }
-    },
-    {
-      "id": 27,
-      "role": "consumer",
-      "name": "Nathan Azevedo",
-      "email": "brunorocha@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "254.731.869-55",
-      "address": {
-        "street": "Trecho de Costa",
-        "number": "1047",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "67029-547"
-      }
-    },
-    {
-      "id": 28,
-      "role": "consumer",
-      "name": "Maria Isis Cavalcante",
-      "email": "llopes@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "380.412.956-06",
-      "address": {
-        "street": "Travessa de Monteiro",
-        "number": "5093",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "53417573"
-      }
-    },
-    {
-      "id": 29,
-      "role": "consumer",
-      "name": "Pedro Miguel Cassiano",
-      "email": "alexiafonseca@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "097.836.251-95",
-      "address": {
-        "street": "Lago de Moraes",
-        "number": "259",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "53535999"
-      }
-    },
-    {
-      "id": 30,
-      "role": "consumer",
-      "name": "Bárbara Gonçalves",
-      "email": "valmeida@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "364.018.725-35",
-      "address": {
-        "street": "Núcleo de Câmara",
-        "number": "1482",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "93771-747"
-      }
-    },
-    {
-      "id": 31,
-      "role": "consumer",
-      "name": "Henry Moreira",
-      "email": "albuquerqueyan@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "915.437.608-48",
-      "address": {
-        "street": "Área de Cassiano",
-        "number": "7379",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "80121-550"
-      }
-    },
-    {
-      "id": 32,
-      "role": "consumer",
-      "name": "Levi da Costa",
-      "email": "gabriellygomes@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "530.294.671-80",
-      "address": {
-        "street": "Passarela Davi Rios",
-        "number": "4125",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "78649182"
-      }
-    },
-    {
-      "id": 33,
-      "role": "consumer",
-      "name": "Srta. Ísis Lopes",
-      "email": "eduardapires@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "647.102.985-30",
-      "address": {
-        "street": "Viaduto de da Rocha",
-        "number": "3398",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "74454441"
-      }
-    },
-    {
-      "id": 34,
-      "role": "consumer",
-      "name": "Sr. João Miguel Guerra",
-      "email": "lcassiano@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "845.237.016-44",
-      "address": {
-        "street": "Passarela Sales",
-        "number": "3839",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "47937-343"
-      }
-    },
-    {
-      "id": 35,
-      "role": "consumer",
-      "name": "Thiago Nunes",
-      "email": "silvaluiza@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "984.160.275-01",
-      "address": {
-        "street": "Praça de Brito",
-        "number": "7815",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "58148510"
-      }
-    },
-    {
-      "id": 36,
-      "role": "consumer",
-      "name": "Giovanna Pimenta",
-      "email": "camila13@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "603.482.719-13",
-      "address": {
-        "street": "Viela Luiz Fernando Correia",
-        "number": "8707",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "49646934"
-      }
-    },
-    {
-      "id": 37,
-      "role": "consumer",
-      "name": "Noah Freitas",
-      "email": "sousacaleb@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "065.918.372-21",
-      "address": {
-        "street": "Estação de Mendes",
-        "number": "5375",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "36169-378"
-      }
-    },
-    {
-      "id": 38,
-      "role": "consumer",
-      "name": "Isabelly Moura",
-      "email": "oliveiraarthur-miguel@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "806.132.945-05",
-      "address": {
-        "street": "Lagoa de Moraes",
-        "number": "812",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "09756-737"
-      }
-    },
-    {
-      "id": 39,
-      "role": "consumer",
-      "name": "Dr. Heitor Gonçalves",
-      "email": "emilly87@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "316.598.072-12",
-      "address": {
-        "street": "Via de Campos",
-        "number": "2808",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "95673436"
-      }
-    },
-    {
-      "id": 40,
-      "role": "consumer",
-      "name": "Giovanna Vargas",
-      "email": "melina36@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "706.518.934-10",
-      "address": {
-        "street": "Ladeira Amanda Novais",
-        "number": "9717",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "16205921"
-      }
-    },
-    {
-      "id": 41,
-      "role": "consumer",
-      "name": "Bruno Mendes",
-      "email": "zvieira@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "507.243.689-65",
-      "address": {
-        "street": "Conjunto de Abreu",
-        "number": "4198",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "69525-651"
-      }
-    },
-    {
-      "id": 42,
-      "role": "consumer",
-      "name": "Leandro Martins",
-      "email": "joao-gabriel12@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "135.629.408-15",
-      "address": {
-        "street": "Chácara Duarte",
-        "number": "2683",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "47689853"
-      }
-    },
-    {
-      "id": 43,
-      "role": "consumer",
-      "name": "Marina Barros",
-      "email": "cassianoluiz-miguel@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "132.580.974-88",
-      "address": {
-        "street": "Passarela Benjamin Albuquerque",
-        "number": "5907",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "73188248"
-      }
-    },
-    {
-      "id": 44,
-      "role": "consumer",
-      "name": "Davi Lucca da Paz",
-      "email": "julianogueira@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "546.791.230-52",
-      "address": {
-        "street": "Núcleo Vasconcelos",
-        "number": "5954",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "81416-531"
-      }
-    },
-    {
-      "id": 45,
-      "role": "consumer",
-      "name": "Isabela Nascimento",
-      "email": "cfarias@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "564.728.913-46",
-      "address": {
-        "street": "Sítio Borges",
-        "number": "8793",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "80380-262"
-      }
-    },
-    {
-      "id": 46,
-      "role": "consumer",
-      "name": "Léo Monteiro",
-      "email": "rafaelteixeira@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "068.471.592-94",
-      "address": {
-        "street": "Área Renan Vasconcelos",
-        "number": "7883",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "78654-290"
-      }
-    },
-    {
-      "id": 47,
-      "role": "consumer",
-      "name": "Rodrigo Porto",
-      "email": "yvieira@example.net",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "673.948.105-93",
-      "address": {
-        "street": "Parque de Pinto",
-        "number": "2127",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "22218-140"
-      }
-    },
-    {
-      "id": 48,
-      "role": "consumer",
-      "name": "Lucca da Paz",
-      "email": "gustavo-henriquebarbosa@example.org",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "820.675.394-00",
-      "address": {
-        "street": "Pátio Kaique Siqueira",
-        "number": "9394",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "70398-556"
-      }
-    },
-    {
-      "id": 49,
-      "role": "consumer",
-      "name": "Dr. Valentim Pastor",
-      "email": "kcamara@example.com",
-      "password": "password123",
-      "cnpj": "",
-      "cpf": "206.879.453-56",
-      "address": {
-        "street": "Travessa de Andrade",
-        "number": "9572",
-        "city": "Florianópolis",
-        "state": "SC",
-        "zip_code": "51480724"
-      }
     }
   ],
   "baskets": [
     {
       "id": 101,
       "seller_id": 1,
-      "name": "Cesta Minima",
-      "description": "Provident itaque accusamus id tempore aperiam est quos doloribus.",
-      "price": 112.72
+      "name": "Kit Dolorem",
+      "description": "Maxime facere dicta deserunt vitae quasi vero temporibus laborum velit hic optio.",
+      "price": 140.58
     },
     {
       "id": 102,
       "seller_id": 1,
-      "name": "Cesta Pariatur",
-      "description": "In in molestias autem dolorum reiciendis voluptate omnis officia cum eveniet molestiae nesciunt minima totam totam.",
-      "price": 120.07
+      "name": "Kit Nemo",
+      "description": "Perferendis corporis earum excepturi praesentium quae ad natus veritatis sint quae minima voluptates aliquam expedita vel.",
+      "price": 170.03
     },
     {
       "id": 103,
       "seller_id": 1,
-      "name": "Cesta Excepturi",
-      "description": "At pariatur consequatur temporibus minus eaque laborum voluptates laudantium vel fuga rerum.",
-      "price": 154.01
+      "name": "Kit Optio",
+      "description": "Officia assumenda veniam similique sed voluptatibus occaecati unde sit.",
+      "price": 132.14
     },
     {
       "id": 201,
       "seller_id": 2,
-      "name": "Cesta Aliquam",
-      "description": "Dolores et velit tenetur incidunt esse quidem cupiditate velit quidem incidunt similique nisi cupiditate.",
-      "price": 127.49
+      "name": "Kit Dolor",
+      "description": "Harum amet nisi amet quidem nobis repellendus mollitia aut cupiditate incidunt error atque quia.",
+      "price": 175.93
     },
     {
       "id": 202,
       "seller_id": 2,
-      "name": "Cesta Labore",
-      "description": "Unde voluptates deserunt autem eligendi distinctio numquam officiis ex accusantium explicabo nisi sed.",
-      "price": 53.64
+      "name": "Kit Ex",
+      "description": "Iure praesentium deleniti earum hic asperiores assumenda saepe nisi sed esse nisi beatae.",
+      "price": 181.85
     },
     {
       "id": 203,
       "seller_id": 2,
-      "name": "Cesta Nulla",
-      "description": "Cum incidunt molestiae animi fuga omnis exercitationem vero illo fugit.",
-      "price": 74.58
+      "name": "Kit Nihil",
+      "description": "Alias at ab consectetur quaerat sit perferendis corrupti numquam voluptatum dicta optio molestiae.",
+      "price": 180.31
     },
     {
       "id": 301,
       "seller_id": 3,
-      "name": "Cesta Dicta",
-      "description": "Suscipit vitae natus temporibus laboriosam itaque vitae placeat aut optio.",
-      "price": 116.45
+      "name": "Kit Consequuntur",
+      "description": "Repellendus corporis ab pariatur maiores non repudiandae commodi debitis reiciendis laboriosam dolorem maxime voluptatem.",
+      "price": 181.82
     },
     {
       "id": 302,
       "seller_id": 3,
-      "name": "Cesta Voluptatum",
-      "description": "Voluptatibus officia modi adipisci dolore quos nemo facere vero cumque impedit.",
-      "price": 181.68
+      "name": "Kit Ducimus",
+      "description": "Inventore nulla occaecati explicabo quis laboriosam animi vitae.",
+      "price": 166.57
     },
     {
       "id": 303,
       "seller_id": 3,
-      "name": "Cesta Voluptatibus",
-      "description": "Impedit mollitia et laboriosam sint facilis voluptates iste sint labore atque.",
-      "price": 82.3
+      "name": "Kit Culpa",
+      "description": "Assumenda et deserunt iste blanditiis culpa dolore provident eum facere excepturi distinctio ipsam eius.",
+      "price": 95.8
     },
     {
       "id": 401,
       "seller_id": 4,
-      "name": "Cesta Accusantium",
-      "description": "Voluptatem nemo repudiandae amet tenetur voluptatum impedit quod magnam ratione amet asperiores natus quaerat unde necessitatibus.",
-      "price": 135.82
+      "name": "Kit Odio",
+      "description": "Aliquid eaque aut minima sed culpa delectus expedita maxime reiciendis aperiam iusto.",
+      "price": 148.87
     },
     {
       "id": 402,
       "seller_id": 4,
-      "name": "Cesta In",
-      "description": "Sint sunt iusto doloribus impedit ratione cupiditate iste vel.",
-      "price": 53.09
+      "name": "Kit Suscipit",
+      "description": "Dolorum facere cum sed molestias laboriosam odit accusantium necessitatibus exercitationem repellendus veritatis nesciunt.",
+      "price": 117.07
     },
     {
       "id": 403,
       "seller_id": 4,
-      "name": "Cesta Deserunt",
-      "description": "Quod adipisci possimus eius ab quisquam dicta architecto iste sit dolor dolorem sed assumenda quae ipsum.",
-      "price": 147.2
+      "name": "Kit Aspernatur",
+      "description": "Aut amet modi iste quod quidem voluptates dolor eum assumenda saepe temporibus totam quos earum quam.",
+      "price": 80.31
     },
     {
       "id": 501,
       "seller_id": 5,
-      "name": "Cesta Voluptatibus",
-      "description": "Illum sunt inventore tempora cumque nesciunt accusamus.",
-      "price": 136.94
+      "name": "Kit Tempora",
+      "description": "Inventore veniam tempora cum officia incidunt magnam veritatis laborum laboriosam eos iusto voluptates.",
+      "price": 166.95
     },
     {
       "id": 502,
       "seller_id": 5,
-      "name": "Cesta Numquam",
-      "description": "Eius iste inventore amet cumque reprehenderit porro dolores dolore eum consectetur iste fugiat veritatis ab.",
-      "price": 169.27
+      "name": "Kit Corporis",
+      "description": "Itaque eveniet odio aliquid dolor repudiandae vero.",
+      "price": 73.51
     },
     {
       "id": 503,
       "seller_id": 5,
-      "name": "Cesta In",
-      "description": "Occaecati impedit doloremque delectus quisquam perspiciatis cupiditate facilis ab.",
-      "price": 94.56
+      "name": "Kit Nam",
+      "description": "Dignissimos animi animi officiis maiores autem fugit reprehenderit earum iure.",
+      "price": 146.95
     }
   ],
-  "subscriptions": [
-    {
-      "id": 1,
-      "user_id": 11,
-      "basket_id": 203,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 2,
-      "user_id": 12,
-      "basket_id": 501,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 3,
-      "user_id": 16,
-      "basket_id": 302,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 4,
-      "user_id": 18,
-      "basket_id": 303,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 5,
-      "user_id": 20,
-      "basket_id": 103,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 6,
-      "user_id": 22,
-      "basket_id": 201,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 7,
-      "user_id": 24,
-      "basket_id": 103,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 8,
-      "user_id": 25,
-      "basket_id": 103,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 9,
-      "user_id": 27,
-      "basket_id": 203,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 10,
-      "user_id": 28,
-      "basket_id": 501,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 11,
-      "user_id": 32,
-      "basket_id": 403,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 12,
-      "user_id": 33,
-      "basket_id": 402,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 13,
-      "user_id": 34,
-      "basket_id": 503,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 14,
-      "user_id": 35,
-      "basket_id": 403,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 15,
-      "user_id": 38,
-      "basket_id": 403,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 16,
-      "user_id": 39,
-      "basket_id": 203,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 17,
-      "user_id": 44,
-      "basket_id": 203,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 18,
-      "user_id": 45,
-      "basket_id": 103,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 19,
-      "user_id": 47,
-      "basket_id": 503,
-      "frequency": "weekly",
-      "status": "Active"
-    },
-    {
-      "id": 20,
-      "user_id": 48,
-      "basket_id": 201,
-      "frequency": "weekly",
-      "status": "Active"
-    }
-  ]
+  "subscriptions": []
 }

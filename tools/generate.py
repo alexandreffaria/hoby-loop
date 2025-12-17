@@ -17,7 +17,7 @@ def generate_mock_data():
         
         data["users"].append({
             "id": seller_id,
-            "role": "seller",
+            "role": "vendedor",
             "name": fake.company(),
             "email": fake.company_email(),
             "password": "password123",
@@ -38,7 +38,7 @@ def generate_mock_data():
             data["baskets"].append({
                 "id": basket_id,
                 "seller_id": seller_id,
-                "name": f"Cesta {fake.word().capitalize()}",
+                "name": f"Kit {fake.word().capitalize()}",
                 "description": fake.sentence(nb_words=12),
                 "price": round(random.uniform(49.90, 199.90), 2)
             })
@@ -47,17 +47,17 @@ def generate_mock_data():
     for k in range(10, 50):
         data["users"].append({
             "id": k,
-            "role": "consumer",
+            "role": "assinante",
             "name": fake.name(),
             "email": fake.email(),
             "password": "password123",
-            "cnpj": "",            # Empty for consumers
-            "cpf": fake.cpf(),     # Generate CPF
+            "cnpj": "",            
+            "cpf": fake.cpf(),     
             "address": {
                 "street": fake.street_name(),
                 "number": str(random.randint(10, 9999)),
-                "city": "Florianópolis",
-                "state": "SC",
+                "city": fake.city(),
+                "state": fake.state_abbr(),
                 "zip_code": fake.postcode()
             }
         })
@@ -75,8 +75,8 @@ def generate_mock_data():
                 "id": subscription_id,
                 "user_id": consumer["id"],
                 "basket_id": basket["id"],
-                "frequency": "weekly",
-                "status": "Active"
+                "frequency": fake.random_element(elements=("semanal", "quinzenal", "mensal")),
+                "status": fake.random_element(elements=("ativo", "pausado", "cancelado"))
             })
             subscription_id += 1
 

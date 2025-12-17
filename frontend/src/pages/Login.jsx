@@ -6,6 +6,7 @@ import { setUser } from '../utils/auth';
 import PageContainer from '../components/layout/PageContainer';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import { t } from '../i18n';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,7 @@ export default function Login() {
         navigate('/consumer');
       }
     } catch (error) {
-      alert("Usuário não encontrado! Verifique os emails de teste abaixo.");
+      alert(t("login.userNotFound"));
     }
   };
 
@@ -40,17 +41,17 @@ export default function Login() {
     <PageContainer maxWidth="max-w-sm">
       <div className="bg-background p-8 rounded-3xl border border-gray-800">
         <h1 className="text-3xl font-black text-main-text mb-6 uppercase tracking-widest text-center bg-gradient-secondary-tertiary text-transparent bg-clip-text">
-          Entrar
+          {t('login.title')}
         </h1>
         
         <form onSubmit={handleLogin} className="space-y-6">
           <Input
             type="email"
-            label="Email"
+            labelI18nKey="login.email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="ex: ada-conceicao@cirino.com"
+            placeholderI18nKey="login.emailPlaceholder"
             required
           />
 
@@ -58,41 +59,40 @@ export default function Login() {
             type="submit"
             variant="primary"
             fullWidth
-          >
-            Acessar Conta
-          </Button>
+            i18nKey="login.accessAccount"
+          />
         </form>
 
         <div className="mt-8 pt-6 border-t border-gray-800 text-xs text-gray-400">
           <p className="font-bold mb-4 uppercase tracking-wider text-center">
-            Clique para testar:
+            {t('login.clickToTest')}
           </p>
           
           <div className="space-y-4">
             <div>
-              <p className="font-bold text-tertiary mb-2 text-center">👑 Administrador</p>
+              <p className="font-bold text-tertiary mb-2 text-center">{t('login.administrator')}</p>
               <button onClick={() => fillEmail('admin@hobyloop.com')} className="block w-full text-center hover:text-secondary transition-colors">
-                Admin User
+                {t('login.adminUser')}
               </button>
             </div>
             
             <div>
-              <p className="font-bold text-forth mb-2 text-center">🛍️ Vendedores</p>
+              <p className="font-bold text-forth mb-2 text-center">{t('login.sellers')}</p>
               <button onClick={() => fillEmail('ada-conceicao@cirino.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
-                Viana (Seller 1)
+                {t('login.seller1')}
               </button>
               <button onClick={() => fillEmail('lunaferreira@da.com')} className="block w-full text-center hover:text-secondary transition-colors">
-                Barros Ferreira (Seller 2)
+                {t('login.seller2')}
               </button>
             </div>
 
             <div>
-              <p className="font-bold text-green-400 mb-2 text-center">👤 Clientes</p>
+              <p className="font-bold text-green-400 mb-2 text-center">{t('login.clients')}</p>
               <button onClick={() => fillEmail('aliciacirino@example.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
-                Luiz Gustavo (User 10)
+                {t('login.client1')}
               </button>
               <button onClick={() => fillEmail('enrico30@example.org')} className="block w-full text-center hover:text-secondary transition-colors">
-                Eduardo (User 11)
+                {t('login.client2')}
               </button>
             </div>
           </div>

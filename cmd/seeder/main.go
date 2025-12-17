@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"log"
 	"path/filepath"
 
@@ -11,7 +11,6 @@ import (
 	"github.com/alexandreffaria/hoby-loop/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 // Helper structs for JSON parsing
@@ -88,7 +87,7 @@ func main() {
 
 	// 2. Read seed data file
 	absPath, _ := filepath.Abs("tools/data.json")
-	fileContent, err := ioutil.ReadFile(absPath)
+	fileContent, err := os.ReadFile(absPath)
 	if err != nil {
 		log.Fatal("Error reading data.json:", err)
 	}
@@ -120,8 +119,69 @@ func main() {
 				AddressState:  u.Address.State,
 				AddressZip:    u.Address.ZipCode,
 			}
-			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&user).Error; err != nil {
-				return err
+			// First check if the user exists by ID
+			var existingUserById models.User
+			resultById := tx.Where("id = ?", user.ID).First(&existingUserById)
+			
+			// Then check if user exists by email
+			var existingUserByEmail models.User
+			resultByEmail := tx.Where("email = ?", user.Email).First(&existingUserByEmail)
+			
+			if resultById.Error == nil {
+				// User with this ID exists, update it
+				if err := tx.Model(&existingUserById).Updates(map[string]interface{}{
+					"email":          user.Email,
+					"password":       user.Password,
+					"role":           user.Role,
+					"name":           user.Name,
+					"cnpj":           user.CNPJ,
+					"cpf":            user.CPF,
+					"is_active":      user.IsActive,
+					"permissions":    user.Permissions,
+					"address_street": user.AddressStreet,
+					"address_number": user.AddressNumber,
+					"address_city":   user.AddressCity,
+					"address_state":  user.AddressState,
+					"address_zip":    user.AddressZip,
+				}).Error; err != nil {
+					return err
+				}
+			} else if resultByEmail.Error == nil {
+				// User with this email exists but with different ID
+				// Update existing user with new data but keep their original ID
+				if err := tx.Model(&existingUserByEmail).Updates(map[string]interface{}{
+					"role":           user.Role,
+					"name":           user.Name,
+					"password":       user.Password,
+					"cnpj":           user.CNPJ,
+					"cpf":            user.CPF,
+					"is_active":      user.IsActive,
+					"permissions":    user.Permissions,
+					"address_street": user.AddressStreet,
+					"address_number": user.AddressNumber,
+					"address_city":   user.AddressCity,
+					"address_state":  user.AddressState,
+					"address_zip":    user.AddressZip,
+				}).Error; err != nil {
+					return err
+				}
+			} else if resultById.Error == gorm.ErrRecordNotFound && resultByEmail.Error == gorm.ErrRecordNotFound {
+				// Neither ID nor email exists, create new user
+				// Use Model field instead of ID to avoid setting sequence counters incorrectly
+				if err := tx.Create(&user).Error; err != nil {
+					log.Printf("Failed to create user %s: %v", user.Email, err)
+					// Try again without the ID (let database assign it)
+					user.Model = gorm.Model{}
+					if err := tx.Create(&user).Error; err != nil {
+						return err
+					}
+				}
+			} else {
+				// Other error occurred with one of the queries
+				if resultById.Error != gorm.ErrRecordNotFound {
+					return resultById.Error
+				}
+				return resultByEmail.Error
 			}
 		}
 		fmt.Printf("✅ Seeded %d Users\n", len(data.Users))
@@ -135,8 +195,33 @@ func main() {
 				Description: b.Description,
 				Price:       b.Price,
 			}
-			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&basket).Error; err != nil {
-				return err
+			// Check if the basket exists by ID
+			var existingBasket models.Basket
+			result := tx.Where("id = ?", basket.ID).First(&existingBasket)
+			
+			if result.Error == nil {
+				// Basket exists, update it
+				if err := tx.Model(&existingBasket).Updates(map[string]interface{}{
+					"name":        basket.Name,
+					"description": basket.Description,
+					"price":       basket.Price,
+					"user_id":     basket.UserID,
+				}).Error; err != nil {
+					return err
+				}
+			} else if result.Error == gorm.ErrRecordNotFound {
+				// Basket doesn't exist, try to create it
+				if err := tx.Create(&basket).Error; err != nil {
+					log.Printf("Failed to create basket %s: %v", basket.Name, err)
+					// Try again without the ID
+					basket.Model = gorm.Model{}
+					if err := tx.Create(&basket).Error; err != nil {
+						return err
+					}
+				}
+			} else {
+				// Other error occurred with the query
+				return result.Error
 			}
 		}
 		fmt.Printf("✅ Seeded %d Baskets\n", len(data.Baskets))
@@ -150,8 +235,33 @@ func main() {
 				Frequency: s.Frequency,
 				Status:    s.Status,
 			}
-			if err := tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&sub).Error; err != nil {
-				return err
+			// Check if the subscription exists by ID
+			var existingSub models.Subscription
+			result := tx.Where("id = ?", sub.ID).First(&existingSub)
+			
+			if result.Error == nil {
+				// Subscription exists, update it
+				if err := tx.Model(&existingSub).Updates(map[string]interface{}{
+					"user_id":    sub.UserID,
+					"basket_id":  sub.BasketID,
+					"frequency":  sub.Frequency,
+					"status":     sub.Status,
+				}).Error; err != nil {
+					return err
+				}
+			} else if result.Error == gorm.ErrRecordNotFound {
+				// Subscription doesn't exist, try to create it
+				if err := tx.Create(&sub).Error; err != nil {
+					log.Printf("Failed to create subscription: %v", err)
+					// Try again without the ID
+					sub.Model = gorm.Model{}
+					if err := tx.Create(&sub).Error; err != nil {
+						return err
+					}
+				}
+			} else {
+				// Other error occurred with the query
+				return result.Error
 			}
 		}
 		fmt.Printf("✅ Seeded %d Subscriptions\n", len(data.Subscriptions))
