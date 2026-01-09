@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import SellerDashboard from './pages/SellerDashboard'
+import SellerOrderManagement from './pages/SellerOrderManagement'
 import ConsumerDashboard from './pages/ConsumerDashboard'
 import ConsumerCheckout from './pages/ConsumerCheckout'
 import ConfigPage from './pages/ConfigPage'
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/seller" element={<SellerDashboard />} />
+        <Route path="/seller/orders/:basketId" element={<SellerOrderManagement />} />
         <Route path="/consumer" element={<ConsumerDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/checkout/:id" element={<ConsumerCheckout />} />

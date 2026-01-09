@@ -88,12 +88,19 @@ export default function SellerDashboard() {
         <div className="space-y-4">
            {baskets.length === 0 && <p className="text-center text-gray-500 text-sm">{t('seller.noRegisteredProducts')}</p>}
            {baskets.map(basket => (
-            <div key={basket.ID} className="p-1 rounded-2xl bg-gradient-secondary-forth">
+            <div
+              key={basket.ID}
+              className="p-1 rounded-2xl bg-gradient-secondary-forth cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate(`/seller/orders/${basket.ID}`)}
+            >
               <div className="bg-background p-4 rounded-xl">
                 <h2 className="text-lg font-black uppercase text-main-text">{basket.name}</h2>
                 <p className="text-xl font-bold text-main-text mb-4">R$ {basket.price}</p>
                 <Button
-                  onClick={() => copyLink(basket.ID)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    copyLink(basket.ID)
+                  }}
                   fullWidth
                   i18nKey="common.copyLink"
                 />

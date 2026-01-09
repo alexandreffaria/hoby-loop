@@ -23,10 +23,16 @@ export default function ConsumerCheckout() {
 
   // Handle subscription
   const handleSubscribe = () => {
-    // For demo, we're subscribing a hardcoded user
-    // In a real app, this would use the authenticated user
+    // Get authenticated user from localStorage
+    const user = JSON.parse(localStorage.getItem('user'))
+    
+    if (!user || !user.ID) {
+      alert(t('checkout.loginRequired'))
+      return
+    }
+    
     axios.post('http://localhost:8080/subscriptions', {
-      user_id: 10, // Hardcoded Consumer "Otto" for demo
+      user_id: user.ID,
       basket_id: parseInt(id),
       frequency: "monthly"
     })

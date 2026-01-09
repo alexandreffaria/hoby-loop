@@ -53,7 +53,12 @@ export default {
     tabClients: "CLIENTES",
     tabProducts: "PRODUTOS",
     noActiveSubscribers: "Nenhum assinante ativo.",
-    noRegisteredProducts: "Nenhum produto cadastrado."
+    noRegisteredProducts: "Nenhum produto cadastrado.",
+    orderManagement: "Gerenciar Pedidos",
+    manageOrders: "Gerencie os pedidos desta cesta",
+    noOrders: "Nenhum pedido encontrado.",
+    orderStatusUpdated: "Status do pedido atualizado com sucesso!",
+    errorUpdatingOrder: "Erro ao atualizar o pedido."
   },
 
   login: {
@@ -121,6 +126,7 @@ export default {
     errorLoading: "Erro ao carregar produto",
     successMessage: "Assinatura realizada com sucesso!",
     errorMessage: "Erro ao assinar.",
+    loginRequired: "Você precisa estar logado para fazer uma assinatura.",
     productImage: "Foto do produto",
     description: "Descrição",
     sixMonths: "Durante 6 meses",
@@ -135,6 +141,25 @@ export default {
     expiryDate: "MM/AA",
     cardName: "Nome impresso no cartão",
     documentNumber: "CPF / CNPJ"
+  },
+  
+  order: {
+    preparing: "Preparando",
+    shipped: "Enviado",
+    delivered: "Entregue",
+    tracking: "Rastreio",
+    previousOrders: "pedidos anteriores",
+    orderId: "Pedido",
+    deliveryAddress: "Endereço de Entrega",
+    markAsShipped: "Marcar como Enviado",
+    markAsDelivered: "Marcar como Entregue",
+    completed: "Concluído",
+    filter: {
+      all: "Todos",
+      preparing: "Preparando",
+      shipped: "Enviados",
+      delivered: "Entregues"
+    }
   },
   
   config: {

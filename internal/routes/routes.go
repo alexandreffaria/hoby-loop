@@ -45,10 +45,14 @@ func SetupRouter() *gin.Engine {
 	// Subscription routes
 	r.POST("/subscriptions", controllers.CreateSubscription)
 	r.GET("/sellers/:id/subscriptions", controllers.GetSellerSubscriptions)
-	r.GET("/users/:id/subscriptions", controllers.GetConsumerSubscriptions)
+	r.GET("/consumers/:id/subscriptions", controllers.GetConsumerSubscriptions)
 	
 	// Order routes
 	r.POST("/orders", controllers.CreateOrder)
+	r.GET("/subscriptions/:id/orders", controllers.GetSubscriptionOrders)
+	r.GET("/baskets/:id/orders", controllers.GetBasketOrders)
+	r.PUT("/orders/:id/status", controllers.UpdateOrderStatus)
+	r.GET("/orders/:id", controllers.GetOrder)
 	
 	// Admin routes with authentication
 	admin := r.Group("/admin")

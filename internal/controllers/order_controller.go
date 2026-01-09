@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/alexandreffaria/hoby-loop/internal/database"
 	"github.com/alexandreffaria/hoby-loop/internal/middleware"
@@ -62,4 +63,103 @@ func sendOrderNotification(subscriptionID uint, status string) {
 	fmt.Printf("To: %s <%s>\n", sub.User.Name, sub.User.Email)
 	fmt.Printf("Message: Your '%s' is now %s!\n", sub.Basket.Name, status)
 	fmt.Printf("----------------------------\n")
+}
+
+// GetSubscriptionOrders retrieves all orders for a specific subscription
+func GetSubscriptionOrders(c *gin.Context) {
+	subscriptionID := c.Param("id")
+	var orders []models.Order
+
+	if err := database.DB.Where("subscription_id = ?", subscriptionID).
+		Order("created_at DESC").
+		Find(&orders).Error; err != nil {
+		middleware.ServerError(c, "Failed to fetch orders: "+err.Error())
+		return
+	}
+
+	middleware.Success(c, orders)
+}
+
+// GetBasketOrders retrieves all orders for baskets owned by a seller
+func GetBasketOrders(c *gin.Context) {
+	basketID := c.Param("id")
+	var orders []models.Order
+
+	// Get all subscriptions for this basket, then get their orders
+	if err := database.DB.Joins("JOIN subscriptions ON subscriptions.id = orders.subscription_id").
+		Where("subscriptions.basket_id = ?", basketID).
+		Preload("Subscription").
+		Preload("Subscription.User").
+		Preload("Subscription.Basket").
+		Order("orders.created_at DESC").
+		Find(&orders).Error; err != nil {
+		middleware.ServerError(c, "Failed to fetch orders: "+err.Error())
+		return
+	}
+
+	middleware.Success(c, orders)
+}
+
+// UpdateOrderStatusInput defines request structure for updating order status
+type UpdateOrderStatusInput struct {
+	Status       string `json:"status" binding:"required,oneof=preparing shipped delivered"`
+	TrackingCode string `json:"tracking_code,omitempty"`
+}
+
+// UpdateOrderStatus updates the status of an order
+func UpdateOrderStatus(c *gin.Context) {
+	orderID := c.Param("id")
+	var input UpdateOrderStatusInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		middleware.BadRequest(c, "Invalid status data", err.Error())
+		return
+	}
+
+	var order models.Order
+	if err := database.DB.First(&order, orderID).Error; err != nil {
+		middleware.NotFound(c, "Order not found")
+		return
+	}
+
+	// Update status
+	order.Status = input.Status
+	if input.TrackingCode != "" {
+		order.TrackingCode = input.TrackingCode
+	}
+
+	// Set timestamps based on status
+	now := time.Now()
+	if input.Status == "shipped" && order.ShippedAt == nil {
+		order.ShippedAt = &now
+	}
+	if input.Status == "delivered" && order.DeliveredAt == nil {
+		order.DeliveredAt = &now
+	}
+
+	if err := database.DB.Save(&order).Error; err != nil {
+		middleware.ServerError(c, "Failed to update order: "+err.Error())
+		return
+	}
+
+	// Send notification
+	go sendOrderNotification(order.SubscriptionID, input.Status)
+
+	middleware.Success(c, order)
+}
+
+// GetOrder retrieves a single order by ID
+func GetOrder(c *gin.Context) {
+	orderID := c.Param("id")
+	var order models.Order
+
+	if err := database.DB.Preload("Subscription").
+		Preload("Subscription.User").
+		Preload("Subscription.Basket").
+		First(&order, orderID).Error; err != nil {
+		middleware.NotFound(c, "Order not found")
+		return
+	}
+
+	middleware.Success(c, order)
 }

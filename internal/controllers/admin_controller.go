@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/alexandreffaria/hoby-loop/internal/database"
 	"github.com/alexandreffaria/hoby-loop/internal/middleware"
 	"github.com/alexandreffaria/hoby-loop/models"
@@ -17,11 +16,7 @@ func GetAllUsers(c *gin.Context) {
 		middleware.ServerError(c, err.Error())
 		return
 	}
-	
-	// Debug information
-	userID := c.GetHeader("X-User-ID")
-	fmt.Printf("Admin users request - Header X-User-ID: %s, Found %d users\n", userID, len(users))
-	
+
 	middleware.Success(c, users)
 }
 
@@ -34,11 +29,7 @@ func GetAllSubscriptions(c *gin.Context) {
 		middleware.ServerError(c, err.Error())
 		return
 	}
-	
-	// Debug information
-	userID := c.GetHeader("X-User-ID")
-	fmt.Printf("Admin subscriptions request - Header X-User-ID: %s, Found %d subscriptions\n", userID, len(subscriptions))
-	
+
 	middleware.Success(c, subscriptions)
 }
 
@@ -51,10 +42,6 @@ func GetAllBaskets(c *gin.Context) {
 		middleware.ServerError(c, err.Error())
 		return
 	}
-	
-	// Debug information
-	userID := c.GetHeader("X-User-ID")
-	fmt.Printf("Admin baskets request - Header X-User-ID: %s, Found %d baskets\n", userID, len(baskets))
-	
+
 	middleware.Success(c, baskets)
 }

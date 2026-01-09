@@ -1,20 +1,21 @@
 package models
 
 import (
+	"time"
 	"gorm.io/gorm"
 )
 
 // User represents any user of the application (seller, consumer, or admin)
 type User struct {
 	gorm.Model
-	Email         string `json:"email" gorm:"unique"`
+	Email         string `json:"email" gorm:"unique;index"`
 	Password      string `json:"-"`
-	Role          string `json:"role"`  // Values: "seller", "consumer", "admin"
+	Role          string `json:"role" gorm:"index"`  // Values: "seller", "consumer", "admin"
 	Name          string `json:"name"`
 	
-	// Business identification fields
-	CNPJ          string `json:"cnpj,omitempty"`    // Only for sellers
-	CPF           string `json:"cpf,omitempty"`     // Only for consumers
+	// Business identification fields with validation
+	CNPJ          string `json:"cnpj,omitempty" gorm:"unique;index"`    // Only for sellers
+	CPF           string `json:"cpf,omitempty" gorm:"unique;index"`     // Only for consumers
 	
 	// Admin-specific fields
 	IsActive      bool   `json:"is_active" gorm:"default:true"` // For disabling admin accounts
@@ -51,7 +52,10 @@ type Subscription struct {
 // Order represents a delivery of a subscription
 type Order struct {
 	gorm.Model
-	SubscriptionID uint         `json:"subscription_id"`
+	SubscriptionID uint         `json:"subscription_id" gorm:"index"`
 	Subscription   Subscription `json:"subscription,omitempty" gorm:"foreignKey:SubscriptionID"`
-	Status         string       `json:"status"`
+	Status         string       `json:"status" gorm:"default:'preparing'"` // "preparing", "shipped", "delivered"
+	TrackingCode   string       `json:"tracking_code,omitempty"`
+	ShippedAt      *time.Time   `json:"shipped_at,omitempty"`
+	DeliveredAt    *time.Time   `json:"delivered_at,omitempty"`
 }

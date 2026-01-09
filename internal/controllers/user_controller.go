@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/alexandreffaria/hoby-loop/internal/database"
 	"github.com/alexandreffaria/hoby-loop/internal/middleware"
+	"github.com/alexandreffaria/hoby-loop/internal/validators"
 	"github.com/alexandreffaria/hoby-loop/models"
 	"github.com/gin-gonic/gin"
 )
@@ -45,6 +46,25 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	// Validate CPF/CNPJ if provided
+	if user.Role == "consumer" && input.CPF != "" {
+		if !validators.ValidateCPF(input.CPF) {
+			middleware.BadRequest(c, "Invalid CPF format", "CPF validation failed")
+			return
+		}
+		// Format CPF before saving
+		input.CPF = validators.FormatCPF(input.CPF)
+	}
+
+	if user.Role == "seller" && input.CNPJ != "" {
+		if !validators.ValidateCNPJ(input.CNPJ) {
+			middleware.BadRequest(c, "Invalid CNPJ format", "CNPJ validation failed")
+			return
+		}
+		// Format CNPJ before saving
+		input.CNPJ = validators.FormatCNPJ(input.CNPJ)
+	}
+
 	// Update fields
 	updates := models.User{
 		Name:          input.Name,
@@ -57,7 +77,7 @@ func UpdateUser(c *gin.Context) {
 		AddressState:  input.AddressState,
 		AddressZip:    input.AddressZip,
 	}
-	
+
 	if err := database.DB.Model(&user).Updates(updates).Error; err != nil {
 		middleware.ServerError(c, err.Error())
 		return
@@ -88,19 +108,38 @@ func RegisterUser(c *gin.Context) {
 
 	// Validate role-specific required fields
 	if input.Role == "seller" && input.CNPJ == "" {
-		middleware.BadRequest(c, "CNPJ is required for seller accounts", nil)
+		middleware.BadRequest(c, "CNPJ is required for seller accounts", "")
 		return
 	}
 
 	if input.Role == "consumer" && input.CPF == "" {
-		middleware.BadRequest(c, "CPF is required for consumer accounts", nil)
+		middleware.BadRequest(c, "CPF is required for consumer accounts", "")
 		return
+	}
+
+	// Validate and format CPF/CNPJ
+	if input.Role == "consumer" && input.CPF != "" {
+		if !validators.ValidateCPF(input.CPF) {
+			middleware.BadRequest(c, "Invalid CPF format", "CPF validation failed")
+			return
+		}
+		// Format CPF before saving
+		input.CPF = validators.FormatCPF(input.CPF)
+	}
+
+	if input.Role == "seller" && input.CNPJ != "" {
+		if !validators.ValidateCNPJ(input.CNPJ) {
+			middleware.BadRequest(c, "Invalid CNPJ format", "CNPJ validation failed")
+			return
+		}
+		// Format CNPJ before saving
+		input.CNPJ = validators.FormatCNPJ(input.CNPJ)
 	}
 
 	// Check if email already exists
 	var existingUser models.User
 	if err := database.DB.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
-		middleware.BadRequest(c, "Email already in use", nil)
+		middleware.BadRequest(c, "Email already in use", "")
 		return
 	}
 
