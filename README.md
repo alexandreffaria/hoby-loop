@@ -1,10 +1,14 @@
-# Hoby Loop
+# Hoby Loop 🔄
 
 A subscription-based marketplace platform connecting sellers (producers) with consumers through recurring basket deliveries. Built with Go (Gin) backend and React (Vite) frontend.
+
+**Status**: MVP Complete ✅ | **Version**: 1.0.0 | **Last Updated**: 2026-01-09
 
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Features](#features)
+- [Recent Updates](#recent-updates)
 - [Architecture](#architecture)
 - [Project Structure](#project-structure)
 - [Technology Stack](#technology-stack)
@@ -12,16 +16,83 @@ A subscription-based marketplace platform connecting sellers (producers) with co
 - [API Endpoints](#api-endpoints)
 - [Getting Started](#getting-started)
 - [Development Tools](#development-tools)
-- [User Roles](#user-roles)
+- [User Roles & Capabilities](#user-roles--capabilities)
+- [Security Notes](#security-notes)
 
 ## 🎯 Overview
 
 Hoby Loop is a marketplace platform that enables:
-- **Sellers** to create and manage product baskets
-- **Consumers** to subscribe to recurring deliveries
+- **Sellers** to create and manage product baskets with order fulfillment tracking
+- **Consumers** to subscribe to recurring deliveries with real-time order status tracking
 - **Admins** to oversee the entire platform
 
-The platform supports subscription-based commerce with flexible delivery frequencies (weekly, bi-weekly, monthly).
+The platform supports subscription-based commerce with flexible delivery frequencies (weekly, bi-weekly, monthly) and includes comprehensive order management with status tracking, shipping information, and Brazilian document validation (CPF/CNPJ).
+
+## ✨ Features
+
+### For Consumers 🛒
+- ✅ Browse available product baskets from local sellers
+- ✅ Subscribe to recurring deliveries (weekly, bi-weekly, monthly)
+- ✅ Real-time order status tracking with visual indicators
+- ✅ View order history with tracking codes
+- ✅ Manage subscriptions (pause, cancel)
+- ✅ CPF validation for Brazilian consumers
+- ✅ Secure checkout process
+
+### For Sellers 🏪
+- ✅ Create and manage product baskets
+- ✅ View subscriptions to their baskets
+- ✅ Order fulfillment management dashboard
+- ✅ Update order status (pending → processing → shipped → delivered)
+- ✅ Add tracking codes and shipping information
+- ✅ CNPJ validation for Brazilian businesses
+- ✅ View customer delivery addresses
+
+### For Admins 👨‍💼
+- ✅ View all users, baskets, and subscriptions
+- ✅ Monitor platform activity
+- ✅ Manage user accounts
+- ✅ Platform-wide analytics
+
+### Technical Features 🔧
+- ✅ RESTful API with standardized responses
+- ✅ Brazilian document validation (CPF/CNPJ)
+- ✅ Order status workflow management
+- ✅ Internationalization support (Portuguese)
+- ✅ Responsive design with TailwindCSS
+- ✅ Database migrations and seeding tools
+- ✅ CORS-enabled API
+
+## 🆕 Recent Updates
+
+### Version 1.0.0 - MVP Complete (2026-01-09)
+
+#### 🎉 New Features
+- **Consumer Order Tracking**: Real-time order status tracking with visual icons (⏳ Pending, 🔄 Processing, 📦 Shipped, ✅ Delivered)
+- **Seller Order Management**: Complete order fulfillment dashboard with status updates and tracking code management
+- **Document Validation**: CPF/CNPJ validation for Brazilian consumers and sellers
+- **Enhanced Order Model**: Added tracking codes, shipped dates, and delivered dates
+
+#### 🔌 New API Endpoints
+- `GET /subscriptions/:id/orders` - Get all orders for a subscription
+- `GET /baskets/:id/orders` - Get all orders for a basket (seller view)
+- `PUT /orders/:id/status` - Update order status with tracking information
+- `GET /orders/:id` - Get single order details
+- `GET /consumers/:id/subscriptions` - Fixed endpoint (was `/users/:id/subscriptions`)
+
+#### 📁 New Files
+- `internal/validators/document_validator.go` - CPF/CNPJ validation logic
+- `frontend/src/utils/validators.js` - Frontend validation utilities
+- `frontend/src/pages/SellerOrderManagement.jsx` - Seller order fulfillment interface
+
+#### 🔄 Enhanced Models
+- **Order Model**: Added `TrackingCode`, `ShippedAt`, `DeliveredAt` fields
+- **User Model**: Added unique constraints on CPF and CNPJ fields
+
+#### 🐛 Bug Fixes
+- Fixed consumer subscriptions endpoint path
+- Improved error handling for order status updates
+- Enhanced validation feedback in forms
 
 ## 🏗️ Architecture
 
@@ -95,9 +166,9 @@ hoby-loop/
 ├── internal/                     # Private application code
 │   ├── controllers/             # Request handlers
 │   │   ├── admin_controller.go  # Admin operations
-│   │   ├── basket_controller.go # Basket CRUD
-│   │   ├── order_controller.go  # Order management
-│   │   ├── subscription_controller.go
+│   │   ├── basket_controller.go # Basket CRUD & order management
+│   │   ├── order_controller.go  # Order management & status updates
+│   │   ├── subscription_controller.go # Subscription & order retrieval
 │   │   └── user_controller.go   # Auth & user management
 │   │
 │   ├── database/                # Database layer
@@ -106,6 +177,9 @@ hoby-loop/
 │   ├── middleware/              # HTTP middleware
 │   │   ├── auth.go             # Authentication & authorization
 │   │   └── response.go         # Standardized API responses
+│   │
+│   ├── validators/              # 🆕 Validation logic
+│   │   └── document_validator.go # CPF/CNPJ validation
 │   │
 │   └── routes/                  # Route definitions
 │       └── routes.go           # All API endpoints
@@ -123,6 +197,7 @@ hoby-loop/
 │   │   │   ├── Landing.jsx
 │   │   │   ├── Login.jsx
 │   │   │   ├── SellerDashboard.jsx
+│   │   │   ├── SellerOrderManagement.jsx  # 🆕 Order fulfillment
 │   │   │   ├── SellerRegistration.jsx
 │   │   │   ├── ConsumerDashboard.jsx
 │   │   │   ├── ConsumerCheckout.jsx
@@ -138,7 +213,8 @@ hoby-loop/
 │   │   │   └── pt-BR.js      # Portuguese translations
 │   │   │
 │   │   ├── utils/            # Utility functions
-│   │   │   └── auth.js       # Authentication helpers
+│   │   │   ├── auth.js       # Authentication helpers
+│   │   │   └── validators.js # 🆕 CPF/CNPJ validation
 │   │   │
 │   │   ├── styles/           # Global styles
 │   │   │   └── colors.css    # Color variables
@@ -247,7 +323,10 @@ erDiagram
     Order {
         uint id PK
         uint subscription_id FK
-        string status
+        string status "pending|processing|shipped|delivered"
+        string tracking_code "optional"
+        timestamp shipped_at "optional"
+        timestamp delivered_at "optional"
         timestamp created_at
         timestamp updated_at
         timestamp deleted_at
@@ -262,12 +341,12 @@ Located in [`models/models.go`](models/models.go:8)
 ```go
 type User struct {
     gorm.Model
-    Email         string  // Unique identifier
+    Email         string  `gorm:"uniqueIndex"` // Unique identifier
     Password      string  // Stored securely (not returned in JSON)
     Role          string  // "seller", "consumer", or "admin"
     Name          string
-    CNPJ          string  // Business ID (sellers only)
-    CPF           string  // Personal ID (consumers only)
+    CNPJ          string  `gorm:"uniqueIndex"` // Business ID (sellers only, validated)
+    CPF           string  `gorm:"uniqueIndex"` // Personal ID (consumers only, validated)
     IsActive      bool    // Admin account status
     Permissions   string  // JSON string of admin permissions
     AddressStreet string
@@ -314,7 +393,10 @@ type Order struct {
     gorm.Model
     SubscriptionID uint
     Subscription   Subscription
-    Status         string
+    Status         string     // "pending", "processing", "shipped", "delivered"
+    TrackingCode   string     // Optional tracking code for shipments
+    ShippedAt      *time.Time // Timestamp when order was shipped
+    DeliveredAt    *time.Time // Timestamp when order was delivered
 }
 ```
 
@@ -337,6 +419,7 @@ Base URL: `http://localhost:8080`
 | POST | `/baskets` | Create new basket | Yes (Seller) |
 | GET | `/baskets/:id` | Get basket details | No |
 | GET | `/sellers/:id/baskets` | Get all baskets for a seller | No |
+| GET | `/baskets/:id/orders` | 🆕 Get all orders for a basket | Yes (Seller) |
 
 ### Subscriptions
 
@@ -344,13 +427,17 @@ Base URL: `http://localhost:8080`
 |--------|----------|-------------|---------------|
 | POST | `/subscriptions` | Create new subscription | Yes (Consumer) |
 | GET | `/sellers/:id/subscriptions` | Get subscriptions for seller's baskets | Yes (Seller) |
-| GET | `/users/:id/subscriptions` | Get user's subscriptions | Yes (Consumer) |
+| GET | `/consumers/:id/subscriptions` | Get consumer's subscriptions | Yes (Consumer) |
+| GET | `/subscriptions/:id/orders` | 🆕 Get all orders for a subscription | Yes |
 
 ### Orders
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
 | POST | `/orders` | Create new order | Yes |
+| GET | `/orders/:id` | 🆕 Get single order details | Yes |
+| PUT | `/orders/:id/status` | 🆕 Update order status & tracking info | Yes (Seller) |
+| GET | `/baskets/:id/orders` | 🆕 Get all orders for a basket (seller view) | Yes (Seller) |
 
 ### Admin Routes
 
@@ -396,6 +483,27 @@ All API responses follow a standardized format handled by [`middleware/response.
   "details": "Additional details"
 }
 ```
+
+### Order Status Update Request
+
+When updating order status via `PUT /orders/:id/status`:
+
+```json
+{
+  "status": "shipped",
+  "tracking_code": "BR123456789"
+}
+```
+
+**Status Values:**
+- `pending` - Initial state
+- `processing` - Seller is preparing the order
+- `shipped` - Order dispatched (requires tracking_code)
+- `delivered` - Order completed
+
+**Automatic Timestamps:**
+- `shipped_at` - Set automatically when status changes to "shipped"
+- `delivered_at` - Set automatically when status changes to "delivered"
 
 ## 🚀 Getting Started
 
@@ -533,26 +641,121 @@ Go application that:
 go run cmd/seeder/main.go
 ```
 
-## 👥 User Roles
+## 👥 User Roles & Capabilities
 
-### Seller (Vendedor)
-- Create and manage product baskets
-- View subscriptions to their baskets
-- Manage delivery schedules
-- **Required field**: CNPJ (business ID)
+### 🏪 Seller (Vendedor)
 
-### Consumer (Assinante/Consumer)
-- Browse available baskets
-- Subscribe to baskets with recurring deliveries
-- Manage subscriptions (pause, cancel)
-- View order history
-- **Required field**: CPF (personal ID)
+**Registration Requirements:**
+- Valid CNPJ (Brazilian business registration number)
+- Business name and address
+- Email and password
 
-### Admin
-- View all users, baskets, and subscriptions
-- Monitor platform activity
-- Manage user accounts
-- **Special fields**: `is_active`, `permissions`
+**Capabilities:**
+- ✅ Create and manage product baskets
+- ✅ View all subscriptions to their baskets
+- ✅ **Order Fulfillment Dashboard**: Manage all orders from their baskets
+- ✅ **Update Order Status**: Move orders through workflow (pending → processing → shipped → delivered)
+- ✅ **Add Tracking Information**: Add tracking codes and shipping timestamps
+- ✅ **View Customer Addresses**: Access delivery information for order fulfillment
+- ✅ Monitor subscription metrics
+
+**Access:**
+- Seller Dashboard at `/seller-dashboard`
+- Order Management at `/seller-orders`
+
+### 🛒 Consumer (Assinante/Consumer)
+
+**Registration Requirements:**
+- Valid CPF (Brazilian personal ID number)
+- Full name and delivery address
+- Email and password
+
+**Capabilities:**
+- ✅ Browse available product baskets from sellers
+- ✅ Subscribe to baskets with flexible delivery frequencies
+- ✅ **Track Orders in Real-Time**: View order status with visual indicators
+  - ⏳ Pending - Order created, awaiting processing
+  - 🔄 Processing - Seller is preparing the order
+  - 📦 Shipped - Order dispatched with tracking code
+  - ✅ Delivered - Order successfully delivered
+- ✅ View complete order history with tracking codes
+- ✅ Manage subscriptions (pause, cancel)
+- ✅ Update delivery address
+
+**Access:**
+- Consumer Dashboard at `/consumer-dashboard`
+- Checkout at `/checkout/:basketId`
+
+### 👨‍💼 Admin
+
+**Capabilities:**
+- ✅ View all users across the platform
+- ✅ View all baskets and subscriptions
+- ✅ Monitor platform-wide activity
+- ✅ Manage user accounts
+- ✅ Access comprehensive analytics
+
+**Special Fields:**
+- `is_active`: Account status flag
+- `permissions`: JSON string of granular permissions
+
+**Access:**
+- Admin Dashboard at `/admin-dashboard`
+
+## 🎯 Using the New Features
+
+### For Consumers: Tracking Your Orders
+
+1. **View Your Orders**:
+   - Navigate to your Consumer Dashboard
+   - Your active subscriptions will show recent orders
+   - Each order displays its current status with an icon
+
+2. **Order Status Meanings**:
+   - ⏳ **Pending**: Your order has been created and is waiting for the seller to process it
+   - 🔄 **Processing**: The seller is preparing your order
+   - 📦 **Shipped**: Your order is on its way! Check the tracking code
+   - ✅ **Delivered**: Your order has been successfully delivered
+
+3. **Tracking Codes**:
+   - Once shipped, you'll see a tracking code
+   - Use this code with your shipping provider to track delivery
+
+### For Sellers: Managing Orders
+
+1. **Access Order Management**:
+   - From your Seller Dashboard, click "Gerenciar Pedidos" (Manage Orders)
+   - View all orders from your baskets in one place
+
+2. **Update Order Status**:
+   - Click on any order to see details
+   - Use the status dropdown to update the order state
+   - Add tracking codes when marking orders as "Shipped"
+   - The system automatically records timestamps for shipped and delivered orders
+
+3. **Order Workflow**:
+   ```
+   Pending → Processing → Shipped (+ tracking code) → Delivered
+   ```
+
+4. **Customer Information**:
+   - View customer delivery addresses
+   - See subscription details
+   - Track order history per customer
+
+### Document Validation
+
+**CPF Validation (Consumers)**:
+- Format: XXX.XXX.XXX-XX
+- Validated on registration
+- Must be unique in the system
+
+**CNPJ Validation (Sellers)**:
+- Format: XX.XXX.XXX/XXXX-XX
+- Validated on registration
+- Must be unique in the system
+
+Both validations include checksum verification to ensure document authenticity.
 
 ## 🔐 Security Notes
 
@@ -560,6 +763,7 @@ go run cmd/seeder/main.go
 - Simple header-based authentication (`X-User-ID`)
 - No password hashing
 - CORS allows all origins
+- CPF/CNPJ validation with checksum verification
 
 **For Production:**
 - [ ] Implement JWT or OAuth2 authentication
@@ -672,4 +876,4 @@ When contributing to this project:
 ---
 
 **Last Updated**: 2026-01-09
-**Project Version**: 0.1.0 (Development)
+**Project Version**: 1.0.0 (MVP Complete)
