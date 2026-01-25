@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { ENDPOINTS } from '../config/api'
 import { t } from '../i18n'
+import CreateBasketForm from '../components/admin/CreateBasketForm'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users')
@@ -10,6 +11,7 @@ export default function AdminDashboard() {
   const [subscriptions, setSubscriptions] = useState([])
   const [baskets, setBaskets] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showCreateForm, setShowCreateForm] = useState(false)
   
   // Get logged in admin user
   const navigate = useNavigate()
@@ -57,12 +59,18 @@ export default function AdminDashboard() {
       .catch(console.error)
 
     // Fetch all baskets
+    fetchBaskets()
+  }, [])
+
+  // Function to fetch baskets (can be called after creating a new basket)
+  const fetchBaskets = () => {
+    const headers = { 'X-User-ID': user?.ID.toString() }
     axios.get(ENDPOINTS.ADMIN_BASKETS, { headers })
       .then(res => {
         setBaskets(res.data.data || [])
       })
       .catch(console.error)
-  }, [])
+  }
 
   // Logout Helper
   const logout = () => {
@@ -79,6 +87,19 @@ export default function AdminDashboard() {
       }
     })
     return counts
+  }
+
+  // Helper to get seller name by ID
+  const getSellerName = (sellerId) => {
+    const seller = users.find(u => u.ID === sellerId)
+    return seller ? seller.name : t('common.unknown')
+  }
+
+  // Handle successful basket creation
+  const handleBasketCreated = () => {
+    fetchBaskets()
+    setShowCreateForm(false)
+    setActiveTab('baskets')
   }
 
   return (
@@ -221,22 +242,73 @@ export default function AdminDashboard() {
 
       {/* Baskets Tab */}
       {!isLoading && activeTab === 'baskets' && (
-        <div className="space-y-4">
-          {baskets.length === 0 && <p className="text-center text-gray-400 text-sm">{t('admin.noProductsAvailable')}</p>}
-          {baskets.map(basket => (
-            <div key={basket.ID} className="p-1 rounded-2xl bg-gradient-secondary-forth">
-              <div className="bg-background p-4 rounded-xl flex justify-between items-start">
-                <div>
-                  <h2 className="text-lg font-black uppercase text-main-text">{basket.name}</h2>
-                  <p className="text-sm text-gray-400">{basket.description}</p>
-                </div>
-                <div className="text-right">
-                  <span className="block text-lg font-bold text-main-text">R$ {basket.price}</span>
-                  <span className="text-xs text-gray-500">{t('admin.sellerId', { id: basket.seller_id || basket.UserID })}</span>
+        <div className="space-y-6">
+          {/* Create Basket Section */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-black uppercase bg-gradient-secondary-tertiary text-transparent bg-clip-text">
+                {t('admin.createBasket.sectionTitle')}
+              </h2>
+              <button
+                onClick={() => setShowCreateForm(!showCreateForm)}
+                className="px-4 py-2 bg-gradient-secondary-tertiary rounded-lg text-sm font-bold hover:opacity-80 transition-opacity"
+              >
+                {showCreateForm ? t('common.cancel') : t('admin.createBasket.newBasket')}
+              </button>
+            </div>
+            
+            {showCreateForm && (
+              <CreateBasketForm onSuccess={handleBasketCreated} />
+            )}
+          </div>
+
+          {/* Baskets Overview Section */}
+          <div>
+            <h2 className="text-lg font-black uppercase bg-gradient-tertiary-forth text-transparent bg-clip-text mb-4">
+              {t('admin.basketsOverview.title')}
+            </h2>
+            
+            {baskets.length === 0 && (
+              <div className="p-1 rounded-2xl bg-gradient-secondary-forth">
+                <div className="bg-background p-8 rounded-xl text-center">
+                  <p className="text-gray-400 text-sm">{t('admin.noProductsAvailable')}</p>
                 </div>
               </div>
+            )}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {baskets.map(basket => (
+                <div key={basket.ID} className="p-1 rounded-2xl bg-gradient-secondary-forth">
+                  <div className="bg-background p-4 rounded-xl">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-black uppercase text-main-text">{basket.name}</h3>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {t('admin.basketsOverview.seller')}: <span className="text-secondary font-bold">{getSellerName(basket.UserID)}</span>
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-xl font-black text-main-text">R$ {basket.price?.toFixed(2)}</span>
+                      </div>
+                    </div>
+                    
+                    {basket.description && (
+                      <p className="text-sm text-gray-400 mb-3 line-clamp-2">{basket.description}</p>
+                    )}
+                    
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-800">
+                      <span className="text-xs text-gray-500">
+                        ID: {basket.ID}
+                      </span>
+                      <span className="px-3 py-1 bg-gradient-secondary-tertiary rounded-full text-xs font-bold">
+                        {t('common.active')}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       )}
     </div>

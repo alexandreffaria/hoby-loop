@@ -10,12 +10,14 @@ import (
 // CreateBasketInput defines request structure for creating a basket
 type CreateBasketInput struct {
 	Name        string  `json:"name" binding:"required"`
-	Description string  `json:"description" binding:"required"`
+	Description string  `json:"description"`
 	Price       float64 `json:"price" binding:"required,gt=0"`
 	SellerID    uint    `json:"seller_id" binding:"required"`
+	Frequency   string  `json:"frequency" binding:"required,oneof=weekly biweekly monthly"`
 }
 
-// CreateBasket handles the creation of a new basket
+// CreateBasket handles the creation of a new basket by admin
+// Admin authentication is handled by middleware
 func CreateBasket(c *gin.Context) {
 	var input CreateBasketInput
 
@@ -24,11 +26,25 @@ func CreateBasket(c *gin.Context) {
 		return
 	}
 
+	// Validate that seller_id exists and has role "seller"
+	var seller models.User
+	if err := database.DB.First(&seller, input.SellerID).Error; err != nil {
+		middleware.BadRequest(c, "Seller not found", "The specified seller_id does not exist")
+		return
+	}
+
+	if seller.Role != "seller" {
+		middleware.BadRequest(c, "Invalid seller", "The specified user is not a seller")
+		return
+	}
+
+	// Create the basket
 	basket := models.Basket{
 		Name:        input.Name,
 		Description: input.Description,
 		Price:       input.Price,
 		UserID:      input.SellerID,
+		Frequency:   input.Frequency,
 	}
 
 	if err := database.DB.Create(&basket).Error; err != nil {

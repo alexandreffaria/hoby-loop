@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!DEPLOYMENT.md
+Ideation.md
+ANALYSIS.md
+UI_UX_IMPROVEMENTS.md
+
+# Frontend (not needed in backend image)
+frontend/
+
+# Tools
+tools/
+
+# Development files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+hoby-loop
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test files
+*_test.go
+*.test
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.swo
+*~

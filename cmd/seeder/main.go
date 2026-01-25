@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	"log"
-	"path/filepath"
+	"time"
 
 	"github.com/alexandreffaria/hoby-loop/config"
 	"github.com/alexandreffaria/hoby-loop/models"
@@ -13,271 +11,509 @@ import (
 	"gorm.io/gorm"
 )
 
-// Helper structs for JSON parsing
-type JsonData struct {
-	Users         []UserJSON         `json:"users"`
-	Baskets       []BasketJSON       `json:"baskets"`
-	Subscriptions []SubscriptionJSON `json:"subscriptions"`
-}
-
-type UserJSON struct {
-	ID          uint   `json:"id"`
-	Role        string `json:"role"`
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	Password    string `json:"password"`
-	CNPJ        string `json:"cnpj,omitempty"`
-	CPF         string `json:"cpf,omitempty"`
-	IsActive    bool   `json:"is_active,omitempty"`
-	Permissions string `json:"permissions,omitempty"`
-	Address     struct {
-		Street  string `json:"street"`
-		Number  string `json:"number"`
-		City    string `json:"city"`
-		State   string `json:"state"`
-		ZipCode string `json:"zip_code"`
-	} `json:"address"`
-}
-
-type BasketJSON struct {
-	ID          uint    `json:"id"`
-	SellerID    uint    `json:"seller_id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-}
-
-type SubscriptionJSON struct {
-	ID        uint   `json:"id"`
-	UserID    uint   `json:"user_id"`
-	BasketID  uint   `json:"basket_id"`
-	Frequency string `json:"frequency"`
-	Status    string `json:"status"`
-}
-
 func main() {
-	// 1. Connect to database using the configuration
+	// Connect to database
 	dsn := config.GetDSN()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Run Migrations with explicit field specification
-	fmt.Println("🔄 Running database migrations...")
-	
-	// First run AutoMigrate to handle standard fields
+	fmt.Println("🔄 Dropping and recreating database schema...")
+
+	// Drop all tables to start fresh
+	if err := db.Migrator().DropTable(&models.Order{}, &models.Subscription{}, &models.Basket{}, &models.User{}); err != nil {
+		log.Printf("⚠️ Warning dropping tables: %v", err)
+	}
+
+	// Run migrations to create tables
 	if err := db.AutoMigrate(&models.User{}, &models.Basket{}, &models.Subscription{}, &models.Order{}); err != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
-	
-	// Explicitly ensure admin fields are properly added
-	adminFieldsMigrations := []string{
-		"ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active boolean DEFAULT true",
-		"ALTER TABLE users ADD COLUMN IF NOT EXISTS permissions text",
-	}
-	
-	for _, migration := range adminFieldsMigrations {
-		if err := db.Exec(migration).Error; err != nil {
-			log.Printf("⚠️ Migration warning: %v", err)
-		}
-	}
-	
-	fmt.Println("✅ Database schema updated successfully")
 
-	// 2. Read seed data file
-	absPath, _ := filepath.Abs("tools/data.json")
-	fileContent, err := os.ReadFile(absPath)
-	if err != nil {
-		log.Fatal("Error reading data.json:", err)
+	fmt.Println("✅ Database schema recreated successfully")
+
+	// Seed the database with realistic demo data
+	fmt.Println("🌱 Seeding database with demo data...")
+
+	if err := seedDatabase(db); err != nil {
+		log.Fatalf("Failed to seed database: %v", err)
 	}
 
-	var data JsonData
-	if err := json.Unmarshal(fileContent, &data); err != nil {
-		log.Fatal("Error parsing json:", err)
-	}
+	fmt.Println("🚀 Seeding completed successfully!")
+}
 
-	// 3. Seed the database
-	fmt.Println("🌱 Seeding database...")
-	db.Transaction(func(tx *gorm.DB) error {
-		
-		// Users
-		for _, u := range data.Users {
-			user := models.User{
-				Model:         gorm.Model{ID: u.ID},
-				Name:          u.Name,
-				Email:         u.Email,
-				Role:          u.Role,
-				Password:      u.Password,
-				CNPJ:          u.CNPJ,
-				CPF:           u.CPF,
-				IsActive:      u.IsActive,
-				Permissions:   u.Permissions,
-				AddressStreet: u.Address.Street,
-				AddressNumber: u.Address.Number,
-				AddressCity:   u.Address.City,
-				AddressState:  u.Address.State,
-				AddressZip:    u.Address.ZipCode,
-			}
-			// First check if the user exists by ID
-			var existingUserById models.User
-			resultById := tx.Where("id = ?", user.ID).First(&existingUserById)
-			
-			// Then check if user exists by email
-			var existingUserByEmail models.User
-			resultByEmail := tx.Where("email = ?", user.Email).First(&existingUserByEmail)
-			
-			if resultById.Error == nil {
-				// User with this ID exists, update it
-				if err := tx.Model(&existingUserById).Updates(map[string]interface{}{
-					"email":          user.Email,
-					"password":       user.Password,
-					"role":           user.Role,
-					"name":           user.Name,
-					"cnpj":           user.CNPJ,
-					"cpf":            user.CPF,
-					"is_active":      user.IsActive,
-					"permissions":    user.Permissions,
-					"address_street": user.AddressStreet,
-					"address_number": user.AddressNumber,
-					"address_city":   user.AddressCity,
-					"address_state":  user.AddressState,
-					"address_zip":    user.AddressZip,
-				}).Error; err != nil {
-					return err
-				}
-			} else if resultByEmail.Error == nil {
-				// User with this email exists but with different ID
-				// Update existing user with new data but keep their original ID
-				if err := tx.Model(&existingUserByEmail).Updates(map[string]interface{}{
-					"role":           user.Role,
-					"name":           user.Name,
-					"password":       user.Password,
-					"cnpj":           user.CNPJ,
-					"cpf":            user.CPF,
-					"is_active":      user.IsActive,
-					"permissions":    user.Permissions,
-					"address_street": user.AddressStreet,
-					"address_number": user.AddressNumber,
-					"address_city":   user.AddressCity,
-					"address_state":  user.AddressState,
-					"address_zip":    user.AddressZip,
-				}).Error; err != nil {
-					return err
-				}
-			} else if resultById.Error == gorm.ErrRecordNotFound && resultByEmail.Error == gorm.ErrRecordNotFound {
-				// Neither ID nor email exists, create new user
-				// Use Model field instead of ID to avoid setting sequence counters incorrectly
-				if err := tx.Create(&user).Error; err != nil {
-					log.Printf("Failed to create user %s: %v", user.Email, err)
-					// Try again without the ID (let database assign it)
-					user.Model = gorm.Model{}
-					if err := tx.Create(&user).Error; err != nil {
-						return err
-					}
-				}
-			} else {
-				// Other error occurred with one of the queries
-				if resultById.Error != gorm.ErrRecordNotFound {
-					return resultById.Error
-				}
-				return resultByEmail.Error
-			}
+// seedDatabase creates all demo data in a transaction
+func seedDatabase(db *gorm.DB) error {
+	return db.Transaction(func(tx *gorm.DB) error {
+		// Step 1: Create Users
+		users, err := createUsers(tx)
+		if err != nil {
+			return fmt.Errorf("failed to create users: %w", err)
 		}
-		fmt.Printf("✅ Seeded %d Users\n", len(data.Users))
+		fmt.Printf("✅ Created %d users (1 admin, 3 sellers, 5 consumers)\n", len(users))
 
-		// Baskets
-		for _, b := range data.Baskets {
-			basket := models.Basket{
-				Model:       gorm.Model{ID: b.ID},
-				UserID:      b.SellerID,
-				Name:        b.Name,
-				Description: b.Description,
-				Price:       b.Price,
-			}
-			// Check if the basket exists by ID
-			var existingBasket models.Basket
-			result := tx.Where("id = ?", basket.ID).First(&existingBasket)
-			
-			if result.Error == nil {
-				// Basket exists, update it
-				if err := tx.Model(&existingBasket).Updates(map[string]interface{}{
-					"name":        basket.Name,
-					"description": basket.Description,
-					"price":       basket.Price,
-					"user_id":     basket.UserID,
-				}).Error; err != nil {
-					return err
-				}
-			} else if result.Error == gorm.ErrRecordNotFound {
-				// Basket doesn't exist, try to create it
-				if err := tx.Create(&basket).Error; err != nil {
-					log.Printf("Failed to create basket %s: %v", basket.Name, err)
-					// Try again without the ID
-					basket.Model = gorm.Model{}
-					if err := tx.Create(&basket).Error; err != nil {
-						return err
-					}
-				}
-			} else {
-				// Other error occurred with the query
-				return result.Error
-			}
+		// Step 2: Create Baskets (Admin creates baskets for sellers - concierge model)
+		baskets, err := createBaskets(tx, users)
+		if err != nil {
+			return fmt.Errorf("failed to create baskets: %w", err)
 		}
-		fmt.Printf("✅ Seeded %d Baskets\n", len(data.Baskets))
+		fmt.Printf("✅ Created %d baskets with different frequencies\n", len(baskets))
 
-		// Subscriptions
-		for _, s := range data.Subscriptions {
-			sub := models.Subscription{
-				Model:     gorm.Model{ID: s.ID},
-				UserID:    s.UserID,
-				BasketID:  s.BasketID,
-				Frequency: s.Frequency,
-				Status:    s.Status,
-			}
-			// Check if the subscription exists by ID
-			var existingSub models.Subscription
-			result := tx.Where("id = ?", sub.ID).First(&existingSub)
-			
-			if result.Error == nil {
-				// Subscription exists, update it
-				if err := tx.Model(&existingSub).Updates(map[string]interface{}{
-					"user_id":    sub.UserID,
-					"basket_id":  sub.BasketID,
-					"frequency":  sub.Frequency,
-					"status":     sub.Status,
-				}).Error; err != nil {
-					return err
-				}
-			} else if result.Error == gorm.ErrRecordNotFound {
-				// Subscription doesn't exist, try to create it
-				if err := tx.Create(&sub).Error; err != nil {
-					log.Printf("Failed to create subscription: %v", err)
-					// Try again without the ID
-					sub.Model = gorm.Model{}
-					if err := tx.Create(&sub).Error; err != nil {
-						return err
-					}
-				}
-			} else {
-				// Other error occurred with the query
-				return result.Error
-			}
+		// Step 3: Create Subscriptions (Consumers subscribe to baskets)
+		subscriptions, err := createSubscriptions(tx, users, baskets)
+		if err != nil {
+			return fmt.Errorf("failed to create subscriptions: %w", err)
 		}
-		fmt.Printf("✅ Seeded %d Subscriptions\n", len(data.Subscriptions))
+		fmt.Printf("✅ Created %d active subscriptions\n", len(subscriptions))
 
-		// Reset Postgres Auto-Increment Counters
-		fmt.Println("🔧 Resetting ID sequences...")
-		tables := []string{"users", "baskets", "subscriptions"}
-		for _, table := range tables {
-			sql := fmt.Sprintf("SELECT setval(pg_get_serial_sequence('%s', 'id'), coalesce(max(id)+1, 1), false) FROM %s;", table, table)
-			if err := tx.Exec(sql).Error; err != nil {
-				log.Printf("⚠️ Failed to reset sequence for %s: %v", table, err)
-			}
+		// Step 4: Create Orders (Mix of past, current, and future orders)
+		orders, err := createOrders(tx, subscriptions)
+		if err != nil {
+			return fmt.Errorf("failed to create orders: %w", err)
 		}
+		fmt.Printf("✅ Created %d orders with various statuses\n", len(orders))
 
 		return nil
 	})
-	
-	fmt.Println("🚀 Seeding completed successfully!")
+}
+
+// createUsers creates admin, seller, and consumer users with realistic Brazilian data
+func createUsers(tx *gorm.DB) (map[string]*models.User, error) {
+	users := make(map[string]*models.User)
+
+	// Admin User
+	admin := &models.User{
+		Name:          "Admin User",
+		Email:         "admin@hobyloop.com",
+		Password:      "admin123", // In production, this should be hashed
+		Role:          "admin",
+		IsActive:      true,
+		Permissions:   `{"manage_users":true,"manage_baskets":true,"view_reports":true}`,
+		AddressStreet: "Avenida Paulista",
+		AddressNumber: "1578",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "01310-200",
+	}
+	if err := tx.Create(admin).Error; err != nil {
+		return nil, err
+	}
+	users["admin"] = admin
+
+	// Seller 1: Fazenda Orgânica Silva
+	seller1 := &models.User{
+		Name:          "Fazenda Orgânica Silva",
+		Email:         "seller1@hobyloop.com",
+		Password:      "seller123",
+		Role:          "seller",
+		CNPJ:          "12.345.678/0001-90",
+		AddressStreet: "Estrada Municipal do Capuava",
+		AddressNumber: "1250",
+		AddressCity:   "Cotia",
+		AddressState:  "SP",
+		AddressZip:    "06709-015",
+	}
+	if err := tx.Create(seller1).Error; err != nil {
+		return nil, err
+	}
+	users["seller1"] = seller1
+
+	// Seller 2: Horta Urbana Santos
+	seller2 := &models.User{
+		Name:          "Horta Urbana Santos",
+		Email:         "seller2@hobyloop.com",
+		Password:      "seller123",
+		Role:          "seller",
+		CNPJ:          "23.456.789/0001-01",
+		AddressStreet: "Rua da Consolação",
+		AddressNumber: "3456",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "01416-001",
+	}
+	if err := tx.Create(seller2).Error; err != nil {
+		return nil, err
+	}
+	users["seller2"] = seller2
+
+	// Seller 3: Produtos Naturais Costa
+	seller3 := &models.User{
+		Name:          "Produtos Naturais Costa",
+		Email:         "seller3@hobyloop.com",
+		Password:      "seller123",
+		Role:          "seller",
+		CNPJ:          "34.567.890/0001-12",
+		AddressStreet: "Avenida Brigadeiro Faria Lima",
+		AddressNumber: "2927",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "01452-000",
+	}
+	if err := tx.Create(seller3).Error; err != nil {
+		return nil, err
+	}
+	users["seller3"] = seller3
+
+	// Consumer 1: Maria Silva
+	consumer1 := &models.User{
+		Name:          "Maria Silva Santos",
+		Email:         "maria.silva@email.com",
+		Password:      "consumer123",
+		Role:          "consumer",
+		CPF:           "123.456.789-01",
+		AddressStreet: "Rua Augusta",
+		AddressNumber: "1234",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "01305-100",
+	}
+	if err := tx.Create(consumer1).Error; err != nil {
+		return nil, err
+	}
+	users["consumer1"] = consumer1
+
+	// Consumer 2: João Oliveira
+	consumer2 := &models.User{
+		Name:          "João Oliveira Costa",
+		Email:         "joao.oliveira@email.com",
+		Password:      "consumer123",
+		Role:          "consumer",
+		CPF:           "234.567.890-12",
+		AddressStreet: "Avenida Rebouças",
+		AddressNumber: "3970",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "05402-600",
+	}
+	if err := tx.Create(consumer2).Error; err != nil {
+		return nil, err
+	}
+	users["consumer2"] = consumer2
+
+	// Consumer 3: Ana Paula
+	consumer3 := &models.User{
+		Name:          "Ana Paula Ferreira",
+		Email:         "ana.ferreira@email.com",
+		Password:      "consumer123",
+		Role:          "consumer",
+		CPF:           "345.678.901-23",
+		AddressStreet: "Rua Oscar Freire",
+		AddressNumber: "2500",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "01426-001",
+	}
+	if err := tx.Create(consumer3).Error; err != nil {
+		return nil, err
+	}
+	users["consumer3"] = consumer3
+
+	// Consumer 4: Carlos Eduardo
+	consumer4 := &models.User{
+		Name:          "Carlos Eduardo Souza",
+		Email:         "carlos.souza@email.com",
+		Password:      "consumer123",
+		Role:          "consumer",
+		CPF:           "456.789.012-34",
+		AddressStreet: "Rua dos Pinheiros",
+		AddressNumber: "1500",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "05422-001",
+	}
+	if err := tx.Create(consumer4).Error; err != nil {
+		return nil, err
+	}
+	users["consumer4"] = consumer4
+
+	// Consumer 5: Beatriz Lima
+	consumer5 := &models.User{
+		Name:          "Beatriz Lima Rodrigues",
+		Email:         "beatriz.lima@email.com",
+		Password:      "consumer123",
+		Role:          "consumer",
+		CPF:           "567.890.123-45",
+		AddressStreet: "Avenida Ibirapuera",
+		AddressNumber: "3103",
+		AddressCity:   "São Paulo",
+		AddressState:  "SP",
+		AddressZip:    "04029-902",
+	}
+	if err := tx.Create(consumer5).Error; err != nil {
+		return nil, err
+	}
+	users["consumer5"] = consumer5
+
+	return users, nil
+}
+
+// createBaskets creates baskets for sellers with different frequencies
+// Note: In the concierge model, admin creates baskets for sellers
+func createBaskets(tx *gorm.DB, users map[string]*models.User) ([]*models.Basket, error) {
+	baskets := []*models.Basket{
+		// Seller 1 Baskets (Fazenda Orgânica Silva)
+		{
+			UserID:      users["seller1"].ID,
+			Name:        "Cesta Semanal de Verduras",
+			Description: "Verduras frescas e orgânicas colhidas semanalmente. Inclui alface, rúcula, couve, espinafre e temperos verdes.",
+			Price:       45.00,
+			Frequency:   "weekly",
+		},
+		{
+			UserID:      users["seller1"].ID,
+			Name:        "Cesta Quinzenal Mista",
+			Description: "Mix de verduras, legumes e frutas orgânicas. Variedade sazonal garantida a cada quinzena.",
+			Price:       85.00,
+			Frequency:   "biweekly",
+		},
+		{
+			UserID:      users["seller1"].ID,
+			Name:        "Cesta Mensal Premium",
+			Description: "Seleção premium de produtos orgânicos incluindo verduras, legumes, frutas e ovos caipiras.",
+			Price:       120.00,
+			Frequency:   "monthly",
+		},
+
+		// Seller 2 Baskets (Horta Urbana Santos)
+		{
+			UserID:      users["seller2"].ID,
+			Name:        "Frutas Frescas Semanais",
+			Description: "Frutas da estação colhidas no ponto ideal de maturação. Variedade de 5-6 tipos diferentes.",
+			Price:       55.00,
+			Frequency:   "weekly",
+		},
+		{
+			UserID:      users["seller2"].ID,
+			Name:        "Hortifruti Quinzenal",
+			Description: "Combinação balanceada de frutas e verduras frescas, ideal para famílias pequenas.",
+			Price:       75.00,
+			Frequency:   "biweekly",
+		},
+
+		// Seller 3 Baskets (Produtos Naturais Costa)
+		{
+			UserID:      users["seller3"].ID,
+			Name:        "Orgânicos do Mês",
+			Description: "Cesta mensal completa com produtos orgânicos certificados: verduras, legumes, frutas e grãos.",
+			Price:       95.00,
+			Frequency:   "monthly",
+		},
+		{
+			UserID:      users["seller3"].ID,
+			Name:        "Cesta Semanal Básica",
+			Description: "Essenciais da semana: tomate, cebola, batata, cenoura, alface e frutas variadas.",
+			Price:       35.00,
+			Frequency:   "weekly",
+		},
+		{
+			UserID:      users["seller3"].ID,
+			Name:        "Cesta Quinzenal Família",
+			Description: "Cesta generosa para famílias, com grande variedade de produtos frescos e orgânicos.",
+			Price:       110.00,
+			Frequency:   "biweekly",
+		},
+	}
+
+	for _, basket := range baskets {
+		if err := tx.Create(basket).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return baskets, nil
+}
+
+// createSubscriptions creates subscriptions for consumers with calculated NextDeliveryDate
+func createSubscriptions(tx *gorm.DB, users map[string]*models.User, baskets []*models.Basket) ([]*models.Subscription, error) {
+	now := time.Now()
+	subscriptions := []*models.Subscription{
+		// Consumer 1: Maria Silva - 2 subscriptions
+		{
+			UserID:           users["consumer1"].ID,
+			BasketID:         baskets[0].ID, // Cesta Semanal de Verduras
+			Frequency:        "weekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 7), // Next week
+		},
+		{
+			UserID:           users["consumer1"].ID,
+			BasketID:         baskets[3].ID, // Frutas Frescas Semanais
+			Frequency:        "weekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 7),
+		},
+
+		// Consumer 2: João Oliveira - 2 subscriptions
+		{
+			UserID:           users["consumer2"].ID,
+			BasketID:         baskets[1].ID, // Cesta Quinzenal Mista
+			Frequency:        "biweekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 14), // In 2 weeks
+		},
+		{
+			UserID:           users["consumer2"].ID,
+			BasketID:         baskets[6].ID, // Cesta Semanal Básica
+			Frequency:        "weekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 7),
+		},
+
+		// Consumer 3: Ana Paula - 3 subscriptions
+		{
+			UserID:           users["consumer3"].ID,
+			BasketID:         baskets[2].ID, // Cesta Mensal Premium
+			Frequency:        "monthly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 30), // In 30 days
+		},
+		{
+			UserID:           users["consumer3"].ID,
+			BasketID:         baskets[4].ID, // Hortifruti Quinzenal
+			Frequency:        "biweekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 14),
+		},
+		{
+			UserID:           users["consumer3"].ID,
+			BasketID:         baskets[0].ID, // Cesta Semanal de Verduras
+			Frequency:        "weekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 7),
+		},
+
+		// Consumer 4: Carlos Eduardo - 2 subscriptions
+		{
+			UserID:           users["consumer4"].ID,
+			BasketID:         baskets[5].ID, // Orgânicos do Mês
+			Frequency:        "monthly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 30),
+		},
+		{
+			UserID:           users["consumer4"].ID,
+			BasketID:         baskets[7].ID, // Cesta Quinzenal Família
+			Frequency:        "biweekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 14),
+		},
+
+		// Consumer 5: Beatriz Lima - 2 subscriptions
+		{
+			UserID:           users["consumer5"].ID,
+			BasketID:         baskets[3].ID, // Frutas Frescas Semanais
+			Frequency:        "weekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 7),
+		},
+		{
+			UserID:           users["consumer5"].ID,
+			BasketID:         baskets[1].ID, // Cesta Quinzenal Mista
+			Frequency:        "biweekly",
+			Status:           "active",
+			NextDeliveryDate: now.AddDate(0, 0, 14),
+		},
+	}
+
+	for _, subscription := range subscriptions {
+		if err := tx.Create(subscription).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return subscriptions, nil
+}
+
+// createOrders creates orders with realistic dates and statuses
+// Mix of past (delivered), current (preparing/shipped), and future (pending) orders
+func createOrders(tx *gorm.DB, subscriptions []*models.Subscription) ([]*models.Order, error) {
+	now := time.Now()
+	var orders []*models.Order
+
+	// For each subscription, create multiple orders to show history
+	for i, subscription := range subscriptions {
+		var subscriptionOrders []*models.Order
+
+		// Determine how many past orders based on frequency
+		pastOrderCount := 0
+		switch subscription.Frequency {
+		case "weekly":
+			pastOrderCount = 4 // 4 weeks of history
+		case "biweekly":
+			pastOrderCount = 3 // 6 weeks of history
+		case "monthly":
+			pastOrderCount = 2 // 2 months of history
+		}
+
+		// Create past orders (delivered)
+		for j := pastOrderCount; j > 0; j-- {
+			var scheduledDate time.Time
+			switch subscription.Frequency {
+			case "weekly":
+				scheduledDate = now.AddDate(0, 0, -7*j)
+			case "biweekly":
+				scheduledDate = now.AddDate(0, 0, -14*j)
+			case "monthly":
+				scheduledDate = now.AddDate(0, 0, -30*j)
+			}
+
+			deliveredAt := scheduledDate.AddDate(0, 0, 1) // Delivered 1 day after scheduled
+			shippedAt := scheduledDate.AddDate(0, 0, -1)  // Shipped 1 day before scheduled
+
+			order := &models.Order{
+				SubscriptionID: subscription.ID,
+				Status:         "delivered",
+				ScheduledDate:  scheduledDate,
+				TrackingCode:   fmt.Sprintf("BR%d%03d%02d", now.Year(), i*10+j, j),
+				ShippedAt:      &shippedAt,
+				DeliveredAt:    &deliveredAt,
+			}
+			subscriptionOrders = append(subscriptionOrders, order)
+		}
+
+		// Create current order (preparing or shipped)
+		currentScheduledDate := now.AddDate(0, 0, 2) // Scheduled for 2 days from now
+		currentStatus := "preparing"
+		var currentShippedAt *time.Time
+		trackingCode := ""
+
+		// Some orders are already shipped
+		if i%3 == 0 {
+			currentStatus = "shipped"
+			shipped := now.AddDate(0, 0, -1) // Shipped yesterday
+			currentShippedAt = &shipped
+			trackingCode = fmt.Sprintf("BR%d%03d00", now.Year(), i*10)
+		}
+
+		currentOrder := &models.Order{
+			SubscriptionID: subscription.ID,
+			Status:         currentStatus,
+			ScheduledDate:  currentScheduledDate,
+			TrackingCode:   trackingCode,
+			ShippedAt:      currentShippedAt,
+		}
+		subscriptionOrders = append(subscriptionOrders, currentOrder)
+
+		// Create future order (pending) - this is the NextDeliveryDate order
+		futureOrder := &models.Order{
+			SubscriptionID: subscription.ID,
+			Status:         "pending",
+			ScheduledDate:  subscription.NextDeliveryDate,
+			TrackingCode:   "",
+		}
+		subscriptionOrders = append(subscriptionOrders, futureOrder)
+
+		// Add all orders for this subscription
+		orders = append(orders, subscriptionOrders...)
+	}
+
+	// Create all orders in database
+	for _, order := range orders {
+		if err := tx.Create(order).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return orders, nil
 }

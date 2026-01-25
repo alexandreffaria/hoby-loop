@@ -2,7 +2,29 @@
 
 A subscription-based marketplace platform connecting sellers (producers) with consumers through recurring basket deliveries. Built with Go (Gin) backend and React (Vite) frontend.
 
-**Status**: MVP Complete ✅ | **Version**: 1.0.0 | **Last Updated**: 2026-01-09
+**Status**: MVP Complete ✅ | **Version**: 1.0.0 | **Last Updated**: 2026-01-25
+
+## 🚀 Quick Start
+
+Get Hobby Loop running in under 5 minutes with Docker:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd hoby-loop
+
+# Create environment file
+cp .env.example .env
+
+# Start all services with Docker Compose
+docker-compose up -d
+
+# Access the application
+# Frontend: http://localhost:80
+# Backend API: http://localhost:8080
+```
+
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## 📋 Table of Contents
 
@@ -804,7 +826,57 @@ The frontend uses TailwindCSS v4 with custom color variables defined in [`fronte
 
 ## 📦 Build & Deployment
 
-### Backend
+### Docker Deployment (Recommended)
+
+The application is fully containerized with Docker for easy deployment:
+
+```bash
+# Start all services (database, backend, frontend)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+```
+
+**What's included:**
+- ✅ PostgreSQL database with persistent storage
+- ✅ Go backend API with health checks
+- ✅ React frontend served by Nginx
+- ✅ Automatic service networking
+- ✅ Production-ready configuration
+
+### Architecture Overview
+
+```
+┌─────────────────┐
+│   Frontend      │
+│  (React+Nginx)  │  Port 80
+│   Container     │
+└────────┬────────┘
+         │
+         │ HTTP/REST
+         │
+┌────────▼────────┐
+│    Backend      │
+│   (Go+Gin)      │  Port 8080
+│   Container     │
+└────────┬────────┘
+         │
+         │ GORM
+         │
+┌────────▼────────┐
+│   PostgreSQL    │
+│   Database      │  Port 5432
+│   Container     │
+└─────────────────┘
+```
+
+### Manual Build (Development)
+
+**Backend:**
 ```bash
 # Build binary
 go build -o hoby-loop main.go
@@ -813,12 +885,41 @@ go build -o hoby-loop main.go
 ./hoby-loop
 ```
 
-### Frontend
+**Frontend:**
 ```bash
 cd frontend
 npm run build
 # Output in frontend/dist/
 ```
+
+### Deployment Documentation
+
+For comprehensive deployment instructions including:
+- Environment configuration
+- Production deployment
+- Database management
+- Health checks
+- Troubleshooting
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete details.
+
+### Demo Credentials
+
+After seeding the database, you can use these demo accounts:
+
+**Admin:**
+- Email: admin@hobyloop.com
+- Password: admin123
+
+**Seller:**
+- Email: seller1@hobyloop.com
+- Password: seller123
+
+**Consumer:**
+- Email: consumer1@hobyloop.com
+- Password: consumer123
+
+*Note: Change these credentials in production!*
 
 ## 🤝 Contributing
 

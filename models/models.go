@@ -2,25 +2,26 @@ package models
 
 import (
 	"time"
+
 	"gorm.io/gorm"
 )
 
 // User represents any user of the application (seller, consumer, or admin)
 type User struct {
 	gorm.Model
-	Email         string `json:"email" gorm:"unique;index"`
-	Password      string `json:"-"`
-	Role          string `json:"role" gorm:"index"`  // Values: "seller", "consumer", "admin"
-	Name          string `json:"name"`
-	
+	Email    string `json:"email" gorm:"unique;index"`
+	Password string `json:"-"`
+	Role     string `json:"role" gorm:"index"` // Values: "seller", "consumer", "admin"
+	Name     string `json:"name"`
+
 	// Business identification fields with validation
-	CNPJ          string `json:"cnpj,omitempty" gorm:"unique;index"`    // Only for sellers
-	CPF           string `json:"cpf,omitempty" gorm:"unique;index"`     // Only for consumers
-	
+	CNPJ string `json:"cnpj,omitempty" gorm:"unique;index"` // Only for sellers
+	CPF  string `json:"cpf,omitempty" gorm:"unique;index"`  // Only for consumers
+
 	// Admin-specific fields
-	IsActive      bool   `json:"is_active" gorm:"default:true"` // For disabling admin accounts
-	Permissions   string `json:"permissions,omitempty"`         // JSON string of admin permissions
-	
+	IsActive    bool   `json:"is_active" gorm:"default:true"` // For disabling admin accounts
+	Permissions string `json:"permissions,omitempty"`         // JSON string of admin permissions
+
 	// Address fields
 	AddressStreet string `json:"address_street"`
 	AddressNumber string `json:"address_number"`
@@ -36,17 +37,19 @@ type Basket struct {
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
 	UserID      uint    `json:"seller_id"`
+	Frequency   string  `json:"frequency"` // Values: "weekly", "biweekly", "monthly"
 }
 
 // Subscription represents a recurring purchase of a basket by a consumer
 type Subscription struct {
 	gorm.Model
-	UserID    uint   `json:"user_id"`
-	User      User   `json:"user,omitempty" gorm:"foreignKey:UserID"`
-	BasketID  uint   `json:"basket_id"`
-	Basket    Basket `json:"basket,omitempty" gorm:"foreignKey:BasketID"`
-	Frequency string `json:"frequency"`
-	Status    string `json:"status"`
+	UserID           uint      `json:"user_id"`
+	User             User      `json:"user,omitempty" gorm:"foreignKey:UserID"`
+	BasketID         uint      `json:"basket_id"`
+	Basket           Basket    `json:"basket,omitempty" gorm:"foreignKey:BasketID"`
+	Frequency        string    `json:"frequency"`
+	Status           string    `json:"status"`
+	NextDeliveryDate time.Time `json:"next_delivery_date" gorm:"index"`
 }
 
 // Order represents a delivery of a subscription
@@ -55,6 +58,7 @@ type Order struct {
 	SubscriptionID uint         `json:"subscription_id" gorm:"index"`
 	Subscription   Subscription `json:"subscription,omitempty" gorm:"foreignKey:SubscriptionID"`
 	Status         string       `json:"status" gorm:"default:'preparing'"` // "preparing", "shipped", "delivered"
+	ScheduledDate  time.Time    `json:"scheduled_date" gorm:"index"`
 	TrackingCode   string       `json:"tracking_code,omitempty"`
 	ShippedAt      *time.Time   `json:"shipped_at,omitempty"`
 	DeliveredAt    *time.Time   `json:"delivered_at,omitempty"`

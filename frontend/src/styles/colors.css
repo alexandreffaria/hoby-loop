@@ -1,7 +1,22 @@
 :root {
+  /* Dark Mode Background - Design Guideline */
   --background: #000813;
+  
+  /* Text Colors */
   --main-text: white;
-  --secondary: #eb3ac7;
-  --tertiary: #6b32d0;
-  --forth: #006f9f;
+  
+  /* Neon/Cyber Gradient Colors - Purple to Blue */
+  --secondary: #eb3ac7;  /* Pink */
+  --tertiary: #6b32d0;   /* Purple */
+  --forth: #006f9f;      /* Blue */
+  
+  /* Status Colors */
+  --success: #10b981;    /* Green */
+  --warning: #f59e0b;    /* Orange/Yellow */
+  --danger: #ef4444;     /* Red */
+  --info: #3b82f6;       /* Blue */
+  
+  /* Border Colors */
+  --border-subtle: rgba(107, 50, 208, 0.3);  /* Purple with 30% opacity */
+  --border-bright: rgba(107, 50, 208, 0.5);  /* Purple with 50% opacity */
 }

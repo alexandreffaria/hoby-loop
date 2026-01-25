@@ -15,6 +15,14 @@ export default {
     cancel: "Cancelar",
     back: "Voltar"
   },
+
+  unauthorized: {
+    title: "Acesso Negado",
+    message: "Você não tem permissão para acessar esta página. Verifique se está usando a conta correta ou entre em contato com o administrador.",
+    goBack: "Voltar",
+    logout: "Sair da Conta",
+    helpText: "Se você acredita que deveria ter acesso a esta página, entre em contato com o suporte."
+  },
   
   button: {
     submit: "Enviar",
@@ -45,7 +53,37 @@ export default {
       role: "Função",
       status: "Status"
     },
-    basketInfo: "Cesta: {name}"
+    basketInfo: "Cesta: {name}",
+    createBasket: {
+      title: "Criar Nova Cesta",
+      sectionTitle: "Criar Nova Cesta",
+      newBasket: "+ Nova Cesta",
+      seller: "Vendedor",
+      selectSeller: "Selecione um vendedor",
+      basketName: "Nome da Cesta",
+      basketNamePlaceholder: "Ex: Cesta de Frutas Orgânicas",
+      description: "Descrição",
+      descriptionPlaceholder: "Descreva o conteúdo da cesta...",
+      price: "Preço (R$)",
+      frequency: "Frequência de Entrega",
+      weekly: "Semanal",
+      biweekly: "Quinzenal",
+      monthly: "Mensal",
+      submit: "Criar Cesta"
+    },
+    basketsOverview: {
+      title: "Visão Geral das Cestas",
+      seller: "Vendedor"
+    },
+    success: {
+      basketCreated: "Cesta criada com sucesso!"
+    },
+    errors: {
+      fetchSellers: "Erro ao carregar vendedores",
+      allFieldsRequired: "Todos os campos são obrigatórios",
+      pricePositive: "O preço deve ser maior que zero",
+      createBasket: "Erro ao criar cesta. Tente novamente."
+    }
   },
 
   seller: {
@@ -119,7 +157,17 @@ export default {
   
   consumer: {
     title: "Minhas Assinaturas",
-    noActiveSubscriptions: "Você ainda não tem assinaturas ativas."
+    noActiveSubscriptions: "Você ainda não tem assinaturas ativas.",
+    deliveryCalendar: "Calendário de Entregas",
+    nextDelivery: "Próxima Entrega",
+    pastDeliveries: "Entregas Anteriores",
+    upcomingDeliveries: "Próximas Entregas",
+    scheduledFor: "Agendado para",
+    noOrders: "Nenhuma entrega agendada ainda.",
+    today: "Hoje",
+    tomorrow: "Amanhã",
+    inDays: "Em {days} dias",
+    daysAgo: "Há {days} dias"
   },
   
   checkout: {
@@ -140,13 +188,22 @@ export default {
     cardData: "Dados do Cartão",
     expiryDate: "MM/AA",
     cardName: "Nome impresso no cartão",
-    documentNumber: "CPF / CNPJ"
+    documentNumber: "CPF / CNPJ",
+    deliveryFrequency: "Frequência de Entrega",
+    weeklyDeliveries: "Entregas Semanais",
+    biweeklyDeliveries: "Entregas Quinzenais",
+    monthlyDeliveries: "Entregas Mensais",
+    weeklyDescription: "Você receberá sua cesta toda semana",
+    biweeklyDescription: "Você receberá sua cesta a cada 2 semanas",
+    monthlyDescription: "Você receberá sua cesta todo mês",
+    frequencyWarning: "Frequência não definida - padrão: semanal"
   },
   
   order: {
     preparing: "Preparando",
     shipped: "Enviado",
     delivered: "Entregue",
+    pending: "Pendente",
     tracking: "Rastreio",
     previousOrders: "pedidos anteriores",
     orderId: "Pedido",
@@ -154,6 +211,8 @@ export default {
     markAsShipped: "Marcar como Enviado",
     markAsDelivered: "Marcar como Entregue",
     completed: "Concluído",
+    scheduledFor: "Agendado para",
+    createdAt: "Criado em",
     filter: {
       all: "Todos",
       preparing: "Preparando",

@@ -54,10 +54,10 @@ func CreateOrder(c *gin.Context) {
 // sendOrderNotification sends a notification about order status
 func sendOrderNotification(subscriptionID uint, status string) {
 	var sub models.Subscription
-	
+
 	// Fetch subscription with related data
 	database.DB.Preload("User").Preload("Basket").First(&sub, subscriptionID)
-	
+
 	// In a real app, this would send an email or push notification
 	fmt.Printf("\n--- 🔔 NOTIFICATION SENT ---\n")
 	fmt.Printf("To: %s <%s>\n", sub.User.Name, sub.User.Email)
@@ -162,4 +162,57 @@ func GetOrder(c *gin.Context) {
 	}
 
 	middleware.Success(c, order)
+}
+
+// GetOrdersByConsumer retrieves all orders for a specific consumer
+// Orders are sorted by ScheduledDate ascending (next delivery first)
+// and include preloaded Subscription and Basket data for display
+func GetOrdersByConsumer(c *gin.Context) {
+	consumerID := c.Param("id")
+	var orders []models.Order
+
+	// Get all orders for this consumer by joining through subscriptions
+	// Preload related data: Subscription -> User and Basket
+	// Sort by ScheduledDate ascending so next delivery appears first
+	if err := database.DB.
+		Joins("JOIN subscriptions ON subscriptions.id = orders.subscription_id").
+		Where("subscriptions.user_id = ?", consumerID).
+		Preload("Subscription").
+		Preload("Subscription.User").
+		Preload("Subscription.Basket").
+		Order("orders.scheduled_date ASC").
+		Find(&orders).Error; err != nil {
+		middleware.ServerError(c, "Failed to fetch consumer orders: "+err.Error())
+		return
+	}
+
+	middleware.Success(c, orders)
+}
+
+// GetOrdersBySeller retrieves all orders for baskets owned by a seller
+// Orders are sorted by ScheduledDate ascending (next delivery first)
+// and include preloaded Subscription, User (consumer), and Basket data
+func GetOrdersBySeller(c *gin.Context) {
+	sellerID := c.Param("id")
+	var orders []models.Order
+
+	// Get all orders for this seller by joining through subscriptions and baskets
+	// First join orders -> subscriptions -> baskets
+	// Filter by basket.user_id (seller_id)
+	// Preload related data: Subscription -> User (consumer) and Basket
+	// Sort by ScheduledDate ascending so next delivery appears first
+	if err := database.DB.
+		Joins("JOIN subscriptions ON subscriptions.id = orders.subscription_id").
+		Joins("JOIN baskets ON baskets.id = subscriptions.basket_id").
+		Where("baskets.user_id = ?", sellerID).
+		Preload("Subscription").
+		Preload("Subscription.User").
+		Preload("Subscription.Basket").
+		Order("orders.scheduled_date ASC").
+		Find(&orders).Error; err != nil {
+		middleware.ServerError(c, "Failed to fetch seller orders: "+err.Error())
+		return
+	}
+
+	middleware.Success(c, orders)
 }

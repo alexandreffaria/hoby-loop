@@ -10,12 +10,16 @@ import { t } from '../i18n';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userType = searchParams.get('type') || 'subscriber';
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
     
     try {
       const response = await axios.post(ENDPOINTS.LOGIN, { email });
@@ -33,82 +37,134 @@ export default function Login() {
         navigate('/consumer');
       }
     } catch (error) {
-      alert(t("login.userNotFound"));
+      setError(t("login.userNotFound"));
+      setLoading(false);
     }
   };
 
-  const fillEmail = (val) => setEmail(val);
+  const fillEmail = (val) => {
+    setEmail(val);
+    setError('');
+  };
 
   return (
-    <PageContainer maxWidth="max-w-sm">
-      <div className="bg-background p-8 rounded-3xl border border-gray-800">
-        <h1 className="text-3xl font-black text-main-text mb-6 uppercase tracking-widest text-center bg-gradient-secondary-tertiary text-transparent bg-clip-text">
-          {t('login.title')}
-        </h1>
-        
-        <form onSubmit={handleLogin} className="space-y-6">
-          <Input
-            type="email"
-            labelI18nKey="login.email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholderI18nKey="login.emailPlaceholder"
-            required
-          />
-
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            i18nKey="login.accessAccount"
-          />
-        </form>
-
-        <div className="mt-4 text-center">
-          <Link
-            to={userType === 'seller' ? '/seller-registration' : '/subscriber-registration'}
-            className="text-secondary hover:text-tertiary transition-colors font-bold"
-          >
-            {t('login.createAccount')}
-          </Link>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-gray-800 text-xs text-gray-400">
-          <p className="font-bold mb-4 uppercase tracking-wider text-center">
-            {t('login.clickToTest')}
-          </p>
+    <div className="min-h-screen bg-[#000813] flex items-center justify-center p-6">
+      <PageContainer maxWidth="max-w-md">
+        <div className="bg-[#000813] p-8 rounded-3xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-black uppercase mb-2 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 text-transparent bg-clip-text">
+              {t('login.title')}
+            </h1>
+            <p className="text-gray-400 text-sm">
+              {userType === 'seller' ? '🏪 Área do Vendedor' : '🛒 Área do Cliente'}
+            </p>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <p className="font-bold text-tertiary mb-2 text-center">{t('login.administrator')}</p>
-              <button onClick={() => fillEmail('admin@hobyloop.com')} className="block w-full text-center hover:text-secondary transition-colors">
-                {t('login.adminUser')}
-              </button>
-            </div>
-            
-            <div>
-              <p className="font-bold text-forth mb-2 text-center">{t('login.sellers')}</p>
-              <button onClick={() => fillEmail('ada-conceicao@cirino.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
-                {t('login.seller1')}
-              </button>
-              <button onClick={() => fillEmail('lunaferreira@da.com')} className="block w-full text-center hover:text-secondary transition-colors">
-                {t('login.seller2')}
-              </button>
-            </div>
+          {/* Login Form */}
+          <form onSubmit={handleLogin} className="space-y-6">
+            <Input
+              type="email"
+              labelI18nKey="login.email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholderI18nKey="login.emailPlaceholder"
+              required
+              error={error}
+            />
 
-            <div>
-              <p className="font-bold text-green-400 mb-2 text-center">{t('login.clients')}</p>
-              <button onClick={() => fillEmail('aliciacirino@example.com')} className="block w-full text-center hover:text-secondary transition-colors mb-1">
-                {t('login.client1')}
-              </button>
-              <button onClick={() => fillEmail('enrico30@example.org')} className="block w-full text-center hover:text-secondary transition-colors">
-                {t('login.client2')}
-              </button>
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              disabled={loading}
+              i18nKey="login.accessAccount"
+            />
+          </form>
+
+          {/* Create Account Link */}
+          <div className="mt-6 text-center">
+            <Link
+              to={userType === 'seller' ? '/seller-registration' : '/subscriber-registration'}
+              className="text-purple-400 hover:text-pink-400 transition-colors font-bold text-sm inline-flex items-center gap-2"
+            >
+              <span>✨</span>
+              {t('login.createAccount')}
+            </Link>
+          </div>
+
+          {/* Demo Accounts Section */}
+          <div className="mt-8 pt-6 border-t border-gray-800">
+            <p className="font-bold mb-4 uppercase tracking-wider text-center text-xs text-gray-500">
+              {t('login.clickToTest')}
+            </p>
+            
+            <div className="space-y-4">
+              {/* Admin */}
+              <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
+                <p className="font-bold text-purple-400 mb-2 text-center text-xs uppercase tracking-wide">
+                  {t('login.administrator')}
+                </p>
+                <button
+                  onClick={() => fillEmail('admin@hobyloop.com')}
+                  className="block w-full text-center text-sm text-gray-300 hover:text-purple-400 transition-colors py-1 rounded hover:bg-gray-800"
+                >
+                  {t('login.adminUser')}
+                </button>
+              </div>
+              
+              {/* Sellers */}
+              <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
+                <p className="font-bold text-blue-400 mb-2 text-center text-xs uppercase tracking-wide">
+                  {t('login.sellers')}
+                </p>
+                <button
+                  onClick={() => fillEmail('ada-conceicao@cirino.com')}
+                  className="block w-full text-center text-sm text-gray-300 hover:text-blue-400 transition-colors py-1 rounded hover:bg-gray-800 mb-1"
+                >
+                  {t('login.seller1')}
+                </button>
+                <button
+                  onClick={() => fillEmail('lunaferreira@da.com')}
+                  className="block w-full text-center text-sm text-gray-300 hover:text-blue-400 transition-colors py-1 rounded hover:bg-gray-800"
+                >
+                  {t('login.seller2')}
+                </button>
+              </div>
+
+              {/* Clients */}
+              <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
+                <p className="font-bold text-green-400 mb-2 text-center text-xs uppercase tracking-wide">
+                  {t('login.clients')}
+                </p>
+                <button
+                  onClick={() => fillEmail('aliciacirino@example.com')}
+                  className="block w-full text-center text-sm text-gray-300 hover:text-green-400 transition-colors py-1 rounded hover:bg-gray-800 mb-1"
+                >
+                  {t('login.client1')}
+                </button>
+                <button
+                  onClick={() => fillEmail('enrico30@example.org')}
+                  className="block w-full text-center text-sm text-gray-300 hover:text-green-400 transition-colors py-1 rounded hover:bg-gray-800"
+                >
+                  {t('login.client2')}
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Back to Home */}
+          <div className="mt-6 text-center">
+            <Link
+              to="/"
+              className="text-gray-500 hover:text-gray-400 transition-colors text-xs"
+            >
+              ← Voltar para início
+            </Link>
+          </div>
         </div>
-      </div>
-    </PageContainer>
+      </PageContainer>
+    </div>
   );
 }
